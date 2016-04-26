@@ -2,5 +2,5 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-smart-banner'
+  name: 'smart-banner'
 };
