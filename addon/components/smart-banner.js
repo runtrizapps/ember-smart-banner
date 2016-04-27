@@ -5,5 +5,5 @@ export default Ember.Component.extend({
   description: '',
   buttonText: '',
   imgUrl: '',
-  showBanner: '',
+  showBanner: true,
 });
