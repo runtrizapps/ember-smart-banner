@@ -19,9 +19,9 @@ module.exports = function(environment) {
     },
 
     emberSmartBanner: {    
-      title: 'App title',
-      text: 'Text description',
-      button: 'Button text',      
+      title: 'App Title',
+      description: 'Description',
+      buttonText: 'Button Text',      
     }
   };
 
