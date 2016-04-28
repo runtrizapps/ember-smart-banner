@@ -1,3 +1,6 @@
+// TODO - proper imports - how did the generator not handle this?
+// TODO - assign const's from Ember: computed, getOwner
+
 export default Ember.Component.extend({
   // http://discuss.emberjs.com/t/best-practices-accessing-app-config-from-addon-code/7006/16
   config: Ember.computed(function() {
@@ -22,6 +25,8 @@ export default Ember.Component.extend({
   }),
   iOS: Ember.computed.equal('mobileOperatingSystem', 'iOS'),
   android: Ember.computed.equal('mobileOperatingSystem', 'iOS'),
+
+  // TODO - these could all be computed.and()'s
   titleIOS: Ember.computed(function() {
     return (this.get('iOS') && this.get('config.titleIOS'));
   }),
@@ -46,6 +51,7 @@ export default Ember.Component.extend({
   marketLink: Ember.computed(function() {
     return (this.get('iOS') && (this.get('config.marketLink') || 'market://details?id=' + this.get('androidAppId')));
   }),
+  // TODO - computed.read's - we don't want to set config data upstream
   iosAppId: Ember.computed.alias('config.iosAppId'),
   androidAppId: Ember.computed.alias('config.iosAppId'),
 
