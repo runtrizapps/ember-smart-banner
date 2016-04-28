@@ -41,7 +41,13 @@ export default Ember.Component.extend({
     return (this.get('android') && this.get('config.buttonTextAndroid'));
   }),
   appStoreLink: Ember.computed(function() {
-    return (this.get('iOS') && (this.get('config.appStoreLink') || 'https://itunes.apple.com/us/app/' + this.get('appID'))); // TODO configure appStoreLanguage
-  })
+    return (this.get('iOS') && (this.get('config.appStoreLink') || 'https://itunes.apple.com/us/app/' + this.get('iosAppId'))); // TODO configure appStoreLanguage
+  }),
+  marketLink: Ember.computed(function() {
+    return (this.get('iOS') && (this.get('config.marketLink') || 'market://details?id=' + this.get('androidAppId')));
+  }),
+  iosAppId: Ember.computed.alias('config.iosAppId'),
+  androidAppId: Ember.computed.alias('config.iosAppId'),
+
   //https://github.com/jasny/jquery.smartbanner/blob/master/jquery.smartbanner.js
 });
