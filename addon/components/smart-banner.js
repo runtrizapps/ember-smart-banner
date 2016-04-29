@@ -39,14 +39,15 @@ export default Ember.Component.extend({
   marketLink: Ember.computed(function() {
     return (this.get('iOS') && (this.get('config.marketLink') || 'market://details?id=' + this.get('androidAppId')));
   }),
-  iosAppId: Ember.computed.reads('config.iosAppId'),
-  androidAppId: Ember.computed.reads('config.iosAppId'),
   actions: {
     openLink: function() {
-      let url = this.get('link')
+      let url = this.get('link');
       window.location.replace(url);
     }
-  }
+  },
+  iosAppId: Ember.computed.alias('reads.iosAppId'),
+  androidAppId: Ember.computed.alias('reads.androidAppId'),
+
 
   //https://github.com/jasny/jquery.smartbanner/blob/master/jquery.smartbanner.js
 });
