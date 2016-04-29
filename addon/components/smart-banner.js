@@ -7,11 +7,11 @@ export default Ember.Component.extend({
     return Ember.getOwner(this).resolveRegistration('config:environment').emberSmartBanner;
   }),
   title: Ember.computed.or('titleIOS','titleAndroid','config.title'),
-  description: Ember.computed.alias('descriptionIOS', 'descriptionAndroid', 'config.description'),
-  buttonText: Ember.computed.alias('buttonTextIOS', 'buttonTextAndroid', 'config.buttonText'),
-  imgUrl: Ember.computed.alias('config.imgUrl'),
+  description: Ember.computed.or('descriptionIOS', 'descriptionAndroid', 'config.description'),
+  buttonText: Ember.computed.or('buttonTextIOS', 'buttonTextAndroid', 'config.buttonText'),
+  imgUrl: Ember.computed.reads('config.imgUrl'),
   showBanner: Ember.computed.or('config.showBanner', 'showBannerDefault'),
-  link: "",
+  link: Ember.computed.or('appStoreLink', 'marketLink', 'config.link'),
   showBannerDefault: true,
   mobileOperatingSystem: Ember.computed(function() {
     var userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -26,34 +26,27 @@ export default Ember.Component.extend({
   iOS: Ember.computed.equal('mobileOperatingSystem', 'iOS'),
   android: Ember.computed.equal('mobileOperatingSystem', 'iOS'),
 
-  // TODO - these could all be computed.and()'s
-  titleIOS: Ember.computed(function() {
-    return (this.get('iOS') && this.get('config.titleIOS'));
-  }),
-  titleAndroid: Ember.computed(function() {
-    return (this.get('android') && this.get('config.titleAndroid'));
-  }),
-  descriptionIOS: Ember.computed(function() {
-    return (this.get('iOS') && this.get('config.descriptionIOS'));
-  }),
-  descriptionAndroid: Ember.computed(function() {
-    return (this.get('android') && this.get('config.descriptionAndroid'));
-  }),
-  buttonTextIOS: Ember.computed(function() {
-    return (this.get('iOS') && this.get('config.buttonTextIOS'));
-  }),
-  buttonTextAndroid: Ember.computed(function() {
-    return (this.get('android') && this.get('config.buttonTextAndroid'));
-  }),
+  titleIOS: Ember.computed.and('iOS','config.titleIOS'),
+  titleAndroid: Ember.computed.and('android','config.titleAndroid'),
+  descriptionIOS: Ember.computed.and('iOS','config.descriptionIOS'),
+  descriptionAndroid: Ember.computed.and('android','config.descriptionAndroid'),
+  buttonTextIOS: Ember.computed.and('iOS','config.buttonTextIOS'),
+  buttonTextAndroid: Ember.computed.and('android','config.buttonTextAndroid'),
+  appStoreLanguage: Ember.computed.reads('config.appStoreLanguage'),
   appStoreLink: Ember.computed(function() {
-    return (this.get('iOS') && (this.get('config.appStoreLink') || 'https://itunes.apple.com/us/app/' + this.get('iosAppId'))); // TODO configure appStoreLanguage
+    return (this.get('iOS') && (this.get('config.appStoreLink') || 'https://itunes.apple.com/' +this.get('appStoreLanguage') + '/app/' + this.get('iosAppId')));
   }),
   marketLink: Ember.computed(function() {
     return (this.get('iOS') && (this.get('config.marketLink') || 'market://details?id=' + this.get('androidAppId')));
   }),
-  // TODO - computed.read's - we don't want to set config data upstream
-  iosAppId: Ember.computed.alias('config.iosAppId'),
-  androidAppId: Ember.computed.alias('config.iosAppId'),
+  iosAppId: Ember.computed.reads('config.iosAppId'),
+  androidAppId: Ember.computed.reads('config.iosAppId'),
+  actions: {
+    openLink: function() {
+      let url = this.get('link')
+      window.location.replace(url);
+    }
+  }
 
   //https://github.com/jasny/jquery.smartbanner/blob/master/jquery.smartbanner.js
 });
