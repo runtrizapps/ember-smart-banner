@@ -9,12 +9,13 @@ export default Ember.Component.extend({
   title: Ember.computed.or('titleIOS','titleAndroid','config.title'),
   description: Ember.computed.or('descriptionIOS', 'descriptionAndroid', 'config.description'),
   buttonText: Ember.computed.or('buttonTextIOS', 'buttonTextAndroid', 'config.buttonText'),
-  imgUrl: Ember.computed.reads('config.imgUrl'),
+  iconUrl: Ember.computed.reads('config.iconUrl'),
   showBanner: Ember.computed.or('config.showBanner', 'showBannerDefault'),
   link: Ember.computed.or('appStoreLink', 'marketLink', 'config.link'),
   showBannerDefault: true,
+
   mobileOperatingSystem: Ember.computed(function() {
-    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    let userAgent = navigator.userAgent || navigator.vendor || window.opera;
     if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i)) {
       return 'iOS';
     } else if (userAgent.match(/Android/i)) {
@@ -23,30 +24,66 @@ export default Ember.Component.extend({
       return 'unknown';
     }
   }),
-  iOS: Ember.computed.equal('mobileOperatingSystem', 'iOS'),
-  android: Ember.computed.equal('mobileOperatingSystem', 'iOS'),
+  showIOS: Ember.computed.equal('mobileOperatingSystem', 'iOS'),
+  showAndroid: Ember.computed.equal('mobileOperatingSystem', 'Android'),
 
   titleIOS: Ember.computed.and('iOS','config.titleIOS'),
-  titleAndroid: Ember.computed.and('android','config.titleAndroid'),
   descriptionIOS: Ember.computed.and('iOS','config.descriptionIOS'),
-  descriptionAndroid: Ember.computed.and('android','config.descriptionAndroid'),
   buttonTextIOS: Ember.computed.and('iOS','config.buttonTextIOS'),
-  buttonTextAndroid: Ember.computed.and('android','config.buttonTextAndroid'),
   appStoreLanguage: Ember.computed.reads('config.appStoreLanguage'),
+  appIdIOS: Ember.computed.alias('reads.iosAppId'),
   appStoreLink: Ember.computed(function() {
     return (this.get('iOS') && (this.get('config.appStoreLink') || 'https://itunes.apple.com/' +this.get('appStoreLanguage') + '/app/' + this.get('iosAppId')));
   }),
+
+  titleAndroid: Ember.computed.and('android','config.titleAndroid'),
+  descriptionAndroid: Ember.computed.and('android','config.descriptionAndroid'),
+  buttonTextAndroid: Ember.computed.and('android','config.buttonTextAndroid'),
+  appIdAndroid: Ember.computed.alias('reads.androidAppId'),
   marketLink: Ember.computed(function() {
     return (this.get('iOS') && (this.get('config.marketLink') || 'market://details?id=' + this.get('androidAppId')));
   }),
+
+  closeBanner: "",
+
   actions: {
     openLink: function() {
+      this.setTimeStamp('lastDayVisited');
       let url = this.get('link');
       window.location.replace(url);
+    },
+    closeBanner: function() {
+      this.set('closeBanner', true);
+      this.setTimeStamp('lastDayVisited');
     }
   },
-  iosAppId: Ember.computed.alias('reads.iosAppId'),
-  androidAppId: Ember.computed.alias('reads.androidAppId'),
+
+  setTimeStamp(key) {
+    const now = new Date();
+    this.setItem(key, now);
+  },
+
+  setItem(key, value) {
+    localStorage.setItem(this._namespacedKey(key), JSON.stringify(value));
+  },
+
+  getItem(key) {
+    const result = localStorage.getItem(this._namespacedKey(key));
+    if (result) {
+      return JSON.parse(result);
+    }
+  },
+
+  namespace: 'ember-smart-banner',
+
+  _namespacedKey(keyName) {
+    return this.get('namespace') + `.${keyName}`;
+  },
+
+  alwaysShowBanner: "", // do not check browser, always show banner
+  reminderAfterClose: "", // number of days after user closes banner to wait to show banner again
+  reminderAfterVisit: "", // number of days after visit to wait to show banner again
+
 
 
   //https://github.com/jasny/jquery.smartbanner/blob/master/jquery.smartbanner.js
