@@ -10,9 +10,11 @@ export default Ember.Component.extend({
   description: Ember.computed.or('descriptionIOS', 'descriptionAndroid', 'config.description'),
   buttonText: Ember.computed.or('buttonTextIOS', 'buttonTextAndroid', 'config.buttonText'),
   iconUrl: Ember.computed.reads('config.iconUrl'),
-  showBanner: Ember.computed.or('config.showBanner', 'showBannerDefault'),
-  link: Ember.computed.or('appStoreLink', 'marketLink', 'config.link'),
+  showBannerReminder: Ember.computed.or('config.alwayShowBanner', 'afterCloseBool', 'afterVisitBool','showBannerDefault'),
+  showBanner: Ember.computed.and('showBannerReminder', 'openBanner'),
+  alwayShowBanner: "",  // Set showBanner to true to always show
   showBannerDefault: true,
+  link: Ember.computed.or('appStoreLink', 'marketLink', 'config.link'),
 
   mobileOperatingSystem: Ember.computed(function() {
     let userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -44,7 +46,8 @@ export default Ember.Component.extend({
     return (this.get('iOS') && (this.get('config.marketLink') || 'market://details?id=' + this.get('androidAppId')));
   }),
 
-  closeBanner: "",
+  closeBanner: 'false',
+  openBanner: Ember.computed.none('closeBanner'),
 
   actions: {
     openLink: function() {
@@ -54,7 +57,7 @@ export default Ember.Component.extend({
     },
     closeBanner: function() {
       this.set('closeBanner', true);
-      this.setTimeStamp('lastDayVisited');
+      this.setTimeStamp('lastDayClosed');
     }
   },
 
@@ -80,11 +83,20 @@ export default Ember.Component.extend({
     return this.get('namespace') + `.${keyName}`;
   },
 
-  alwaysShowBanner: "", // do not check browser, always show banner
-  reminderAfterClose: "", // number of days after user closes banner to wait to show banner again
-  reminderAfterVisit: "", // number of days after visit to wait to show banner again
+  reminderAfterClose: Ember.computed.reads('config.reminderAfterClose'), // Number of days after user closes banner to wait to show banner again, 0 for always show
+  reminderAfterVisit: Ember.computed.reads('config.reminderAfterVisit'), // Number of days after visit to wait to show banner again, 0 for always show
 
+  afterCloseBool: Ember.computed.gte('daysSinceClose', 'reminderAfterClose'),
+  afterVisitBool: Ember.computed.gte('daysSinceVisit', 'reminderAfterVisit'),
 
+  daysSinceClose: Ember.computed(function() {
+    const timeSinceClosed = new Date() - Date.parse(getItem('lastDayClosed'));
+    return Math.floor(timeSinceClosed/(24 * 60 * 60 * 1000)); // Convert ms to days
+  }),
+  daysSinceVisit: Ember.computed(function() {
+    const timeSinceVisited = new Date() - Date.parse(getItem('lastDayVisited'));
+    return Math.floor(timeSinceVisited/(24 * 60 * 60 * 1000)); // Convert ms to days
+  }),
 
   //https://github.com/jasny/jquery.smartbanner/blob/master/jquery.smartbanner.js
 });
