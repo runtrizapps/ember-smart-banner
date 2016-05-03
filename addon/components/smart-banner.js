@@ -1,5 +1,5 @@
-// TODO - proper imports - how did the generator not handle this?
-// TODO - assign const's from Ember: computed, getOwner
+/* global window, localStorage, navigator */
+
 import Ember from 'ember';
 const {
   computed,
@@ -23,7 +23,7 @@ export default Ember.Component.extend({
   link: computed.or('appStoreLink', 'marketLink', 'config.link'),
 
   mobileOperatingSystem: computed(function() {
-    let userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
     if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i)) {
       return 'iOS';
     } else if (userAgent.match(/Android/i)) {
@@ -59,7 +59,7 @@ export default Ember.Component.extend({
   actions: {
     openLink: function() {
       this.setTimeStamp('lastDayVisited');
-      let url = this.get('link');
+      const url = this.get('link');
       window.location.replace(url);
     },
 
@@ -98,12 +98,12 @@ export default Ember.Component.extend({
   afterVisitBool: computed.gte('daysSinceVisit', 'reminderAfterVisit'),
 
   daysSinceClose: computed(function() {
-    const timeSinceClosed = new Date() - Date.parse(getItem('lastDayClosed'));
+    const timeSinceClosed = new Date() - Date.parse(this.getItem('lastDayClosed'));
     return Math.floor(timeSinceClosed / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
 
   daysSinceVisit: computed(function() {
-    const timeSinceVisited = new Date() - Date.parse(getItem('lastDayVisited'));
+    const timeSinceVisited = new Date() - Date.parse(this.getItem('lastDayVisited'));
     return Math.floor(timeSinceVisited / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
 
