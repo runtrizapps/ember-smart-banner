@@ -1,0 +1,13 @@
+{
+	"preset": "airbnb",
+	"requireSpacesInAnonymousFunctionExpression": {
+    "beforeOpeningCurlyBrace": true
+	},
+	"disallowSpacesInAnonymousFunctionExpression": {
+		"beforeOpeningRoundBrace": true
+	},
+	"requirePaddingNewLinesBeforeLineComments": false,
+	"requireShorthandArrowFunctions": false,
+	"requireTrailingComma": false,
+	"maximumLineLength": 250,
+}
