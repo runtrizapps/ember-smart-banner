@@ -1,7 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('ember-smart-banner', 'Integration | Component | ember smart banner', {
+moduleForComponent('smart-banner', 'Integration | Component | ember smart banner', {
   integration: true
 });
 
@@ -9,18 +9,8 @@ test('it renders', function(assert) { // TODO - make this more real
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{ember-smart-banner}}`);
-
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#ember-smart-banner}}
-      template block text
-    {{/ember-smart-banner}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  this.render(hbs`{{smart-banner}}`);
+  assert.ok(this.$().text().trim().match(/App Title/));
 });
 
 
@@ -30,7 +20,7 @@ test('it does not render on iOS unless an appId is set', function(assert) {
   this.set('android', false);
   this.set('androidAppId', null);
 
-  this.render(hbs`{{ember-smart-banner
+  this.render(hbs`{{smart-banner
     iOS=iOS
     iOSAppId=iOSAppId
     android=android
@@ -51,7 +41,7 @@ test('it does not render on iOS unless iOS platform detected', function(assert) 
   this.set('android', false);
   this.set('androidAppId', null);
 
-  this.render(hbs`{{ember-smart-banner
+  this.render(hbs`{{smart-banner
     iOS=iOS
     iOSAppId=iOSAppId
     android=android
@@ -71,7 +61,7 @@ test('it does not render on Android unless appId is set', function(assert) {
   this.set('android', true);
   this.set('androidAppId', 123);
 
-  this.render(hbs`{{ember-smart-banner
+  this.render(hbs`{{smart-banner
     iOS=iOS
     iOSAppId=iOSAppId
     android=android
@@ -91,7 +81,7 @@ test('it does not render on Android unless Android platform detected', function(
   this.set('android', true);
   this.set('androidAppId', 123);
 
-  this.render(hbs`{{ember-smart-banner
+  this.render(hbs`{{smart-banner
     iOS=iOS
     iOSAppId=iOSAppId
     android=android
