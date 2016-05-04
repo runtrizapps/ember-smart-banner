@@ -14,7 +14,7 @@ export default Ember.Component.extend({
 
   title: computed.or('titleIOS', 'titleAndroid', 'config.title'),
   description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description'),
-  buttonText: computed.or('buttonTextIOS', 'buttonTextAndroid', 'config.buttonText'),
+  linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText'),
   iconUrl: computed.reads('config.iconUrl'),
   showBannerReminder: computed.or('config.alwayShowBanner', 'afterCloseBool', 'afterVisitBool', 'showBannerDefault'),
   showBanner: computed.and('showBannerReminder', 'openBanner'),
