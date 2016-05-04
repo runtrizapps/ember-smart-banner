@@ -51,6 +51,7 @@ export default Ember.Component.extend({
   appIdAndroid: computed.alias('reads.androidAppId'),
   marketLink: computed(function() {
     return (this.get('iOS') && (this.get('config.marketLink') || 'market://details?id=' + this.get('androidAppId')));
+    return (this.get('android') && (this.get('config.marketLink') || 'market://details?id=' + this.get('appIdAndroid')));
   }),
 
   closeBanner: 'false',
