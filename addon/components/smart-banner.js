@@ -33,24 +33,23 @@ export default Ember.Component.extend({
     }
   }),
 
-  showIOS: computed.equal('mobileOperatingSystem', 'iOS'),
-  showAndroid: computed.equal('mobileOperatingSystem', 'Android'),
+  iOS: computed.equal('mobileOperatingSystem', 'iOS'),
+  android: computed.equal('mobileOperatingSystem', 'Android'),
 
   titleIOS: computed.and('iOS', 'config.titleIOS'),
   descriptionIOS: computed.and('iOS', 'config.descriptionIOS'),
-  buttonTextIOS: computed.and('iOS', 'config.buttonTextIOS'),
+  linkTextIOS: computed.and('iOS', 'config.linkTextIOS'),
   appStoreLanguage: computed.reads('config.appStoreLanguage'),
-  appIdIOS: computed.alias('reads.iosAppId'),
+  appIdIOS: computed.reads('reads.appIdIOS'),
   appStoreLink: computed(function() {
-    return (this.get('iOS') && (this.get('config.appStoreLink') || 'https://itunes.apple.com/' + this.get('appStoreLanguage') + '/app/' + this.get('iosAppId')));
+    return (this.get('iOS') && (this.get('config.appStoreLink') || 'https://itunes.apple.com/' + this.get('appStoreLanguage') + '/app/' + this.get('appIdIOS')));
   }),
 
   titleAndroid: computed.and('android', 'config.titleAndroid'),
   descriptionAndroid: computed.and('android', 'config.descriptionAndroid'),
-  buttonTextAndroid: computed.and('android', 'config.buttonTextAndroid'),
-  appIdAndroid: computed.alias('reads.androidAppId'),
+  linkTextAndroid: computed.and('android', 'config.linkTextAndroid'),
+  appIdAndroid: computed.reads('reads.appIdAndroid'),
   marketLink: computed(function() {
-    return (this.get('iOS') && (this.get('config.marketLink') || 'market://details?id=' + this.get('androidAppId')));
     return (this.get('android') && (this.get('config.marketLink') || 'market://details?id=' + this.get('appIdAndroid')));
   }),
 
