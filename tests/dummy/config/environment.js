@@ -21,8 +21,7 @@ module.exports = function(environment) {
     emberSmartBanner: {    
       title: 'App Title',
       description: 'Description',
-      buttonText: 'Button Text',
-      link: 'https://itunes.apple.com/'     
+      linkText: 'Link Text',     
     }
   };
 
