@@ -60,8 +60,6 @@ export default Ember.Component.extend({
   actions: {
     openLink: function() {
       this.setTimeStamp('lastDayVisited');
-      const url = this.get('link');
-      window.location.replace(url);
     },
 
     closeBanner: function() {
