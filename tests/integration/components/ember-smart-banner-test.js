@@ -16,36 +16,40 @@ test('it renders', function(assert) { // TODO - make this more real
 
 test('it does not render on iOS unless an appId is set', function(assert) {
   this.set('iOS', true);
-  this.set('iosAppId', 123);
+  this.set('appIdIOS', 123);
   this.set('android', false);
-  this.set('androidAppId', null);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
 
   this.render(hbs`{{smart-banner
     iOS=iOS
-    iOSAppId=iOSAppId
+    appIdIOS=appIdIOS
     android=android
-    androidAppId=androidAppId
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
   }}`);
-
   // TODO Assert that it renders with appStore link
-
-  this.set('iosAppId', null);
-
-  // TODO Assert that it is no longer shown
+  assert.equal(this.$('.ember-smart-banner--link').attr('href'), 'https://itunes.apple.com/en/app/123');
+  //
+  // this.set('iosAppId', null);
+  //
+  // // TODO Assert that it is no longer shown
 
 });
 
 test('it does not render on iOS unless iOS platform detected', function(assert) {
   this.set('iOS', true);
-  this.set('iosAppId', 123);
+  this.set('appIdIOS', 123);
   this.set('android', false);
-  this.set('androidAppId', null);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
 
   this.render(hbs`{{smart-banner
     iOS=iOS
-    iOSAppId=iOSAppId
+    appIdIOS=appIdIOS
     android=android
-    androidAppId=androidAppId
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
   }}`);
 
   // TODO Assert that it renders with appStore link
