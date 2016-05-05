@@ -17,9 +17,9 @@ export default Ember.Component.extend({
   description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description'),
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText'),
   iconUrl: computed.reads('config.iconUrl'),
-  showBannerReminder: computed.or('config.alwayShowBanner', 'afterCloseBool', 'afterVisitBool', 'showBannerDefault'),
-  showBanner: computed.and('showBannerReminder', 'openBanner'),
-  alwayShowBanner: '',  // Set showBanner to true to always show
+  showBannerReminder: computed.or('alwayShowBanner', 'afterCloseBool', 'afterVisitBool', 'showBannerDefault'),
+  showBanner: computed.and('showBannerReminder', 'openBanner', 'supportsOS'),
+  alwayShowBanner: computed.reads('config.alwayShowBanner'),  // Set showBanner to true to always show
   showBannerDefault: true,
   link: computed.or('appStoreLink', 'marketLink', 'config.link'),
 
@@ -33,6 +33,10 @@ export default Ember.Component.extend({
       return 'unknown';
     }
   }),
+
+  supportsOS: computed.or('supportsIOS', 'supportAndroid'),
+  supportsIOS: computed.and('iOS', 'appIdIOS'),
+  supportAndroid: computed.and('iOS', 'appIdAndroid'),
 
   iOS: computed.equal('mobileOperatingSystem', 'iOS'),
   android: computed.equal('mobileOperatingSystem', 'Android'),
