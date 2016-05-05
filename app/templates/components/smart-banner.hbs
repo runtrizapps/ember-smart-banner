@@ -1,5 +1,7 @@
-<div class="ember-smart-banner">
-  <div class="ember-smart-banner--title">{{title}}</div>
-  <div class="ember-smart-banner--description">{{description}}</div>
-  <a href="{{link}}" class="ember-smart-banner--link" target="_blank">{{linkText}}</a>
-</div>
+{{#if showBanner}}
+  <div class="ember-smart-banner">
+    <div class="ember-smart-banner--title">{{title}}</div>
+    <div class="ember-smart-banner--description">{{description}}</div>
+    <a href="{{link}}" class="ember-smart-banner--link" target="_blank">{{linkText}}</a>
+  </div>
+{{/if}}
