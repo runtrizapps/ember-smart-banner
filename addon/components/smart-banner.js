@@ -3,8 +3,9 @@
 import Ember from 'ember';
 const {
   computed,
-  getOwner,
 } = Ember;
+
+import getOwner from 'ember-getowner-polyfill';
 
 export default Ember.Component.extend({
   // http://discuss.emberjs.com/t/best-practices-accessing-app-config-from-addon-code/7006/16
