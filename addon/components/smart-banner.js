@@ -54,8 +54,8 @@ export default Ember.Component.extend({
     return (this.get('android') && (this.get('config.marketLink') || 'market://details?id=' + this.get('appIdAndroid')));
   }),
 
-  closeBanner: 'false',
-  openBanner: computed.none('closeBanner'),
+  closeBanner: false,
+  openBanner: computed.not('closeBanner'),
 
   actions: {
     openLink: function() {
