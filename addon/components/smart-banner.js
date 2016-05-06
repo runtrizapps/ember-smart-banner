@@ -17,10 +17,8 @@ export default Ember.Component.extend({
   description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description'),
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText'),
   iconUrl: computed.reads('config.iconUrl'),
-  showBannerReminder: computed.or('alwayShowBanner', 'showBannerDefault'),
-  showBanner: computed.and('showBannerReminder', 'bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
+  showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
   alwayShowBanner: computed.reads('config.alwayShowBanner'), // Overrides showBannerReminder
-  showBannerDefault: true,
   link: computed.or('appStoreLink', 'marketLink', 'config.link'),
 
   mobileOperatingSystem: computed(function() {
@@ -101,7 +99,7 @@ export default Ember.Component.extend({
   afterVisitUndefined: computed.none('reminderAfterVisit'),
 
   afterCloseBool: computed('daysSinceClose', 'reminderAfterClose', function() {
-    if (!this.get('reminderAfterClose')) {
+    if (!this.get('reminderAfterClose')  || this.get('alwayShowBanner')) {
       return true;
     }
 
@@ -109,7 +107,7 @@ export default Ember.Component.extend({
   }),
 
   afterVisitBool: computed('daysSinceVisit', 'reminderAfterVisit', function() {
-    if (!this.get('reminderAfterVisit')) {
+    if (!this.get('reminderAfterVisit') || this.get('alwayShowBanner')) {
       return true;
     }
 
