@@ -98,16 +98,16 @@ export default Ember.Component.extend({
   afterCloseUndefined: computed.none('reminderAfterClose'),
   afterVisitUndefined: computed.none('reminderAfterVisit'),
 
-  afterCloseBool: computed('daysSinceClose', 'reminderAfterClose', function() {
-    if (!this.get('reminderAfterClose')  || this.get('alwayShowBanner')) {
+  afterCloseBool: computed('daysSinceClose', 'reminderAfterClose', 'alwayShowBanner', function() {
+    if (!this.get('reminderAfterClose')  || this.get('alwaysShowBanner')) {
       return true;
     }
 
     return this.gteDependentKeys('daysSinceClose', 'reminderAfterClose');
   }),
 
-  afterVisitBool: computed('daysSinceVisit', 'reminderAfterVisit', function() {
-    if (!this.get('reminderAfterVisit') || this.get('alwayShowBanner')) {
+  afterVisitBool: computed('daysSinceVisit', 'reminderAfterVisit', 'alwayShowBanner', function() {
+    if (!this.get('reminderAfterVisit') || this.get('alwaysShowBanner')) {
       return true;
     }
 
