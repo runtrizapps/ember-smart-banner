@@ -223,8 +223,9 @@ test("banner should be open if number of days since the banner was closed is equ
     reminderAfterClose=30
   }}`);
 
-  // Assert that it is no longer shown
   assert.equal(this.$('.ember-smart-banner').length, 1, 'banner is open');
+
+
 });
 
 test("banner should be open if number of days since the banner was closed is greater than the set reminder", function(assert) {
@@ -247,7 +248,6 @@ test("banner should be open if number of days since the banner was closed is gre
     reminderAfterClose=30
   }}`);
 
-  // Assert that it is no longer shown
   assert.equal(this.$('.ember-smart-banner').length, 1, 'banner is open');
 });
 
@@ -271,6 +271,62 @@ test("banner should be closed if number of days since the banner was closed is l
     reminderAfterClose=30
   }}`);
 
-  // Assert that it is no longer shown
+  assert.equal(this.$('.ember-smart-banner').length, 0, 'banner is closed');
+});
+
+test("banner should be open in complex scenario", function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('android', false);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
+  localStorage.clear();
+  var dateOffset = (24 * 60 * 60 * 1000) * 60; // 60 days
+  var newDate = new Date(); // today
+  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 60 days prior to today
+  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  dateOffset = (24 * 60 * 60 * 1000) * 45; // 45 days
+  newDate = new Date(); // today
+  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 45 days prior to today
+  localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
+  this.render(hbs `{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+    reminderAfterClose=30
+    reminderAfterVisit=30
+  }}`);
+
+  assert.equal(this.$('.ember-smart-banner').length, 1, 'banner is open');
+});
+
+test("banner should be closed in complex scenario", function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('android', false);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
+  localStorage.clear();
+  var dateOffset = (24 * 60 * 60 * 1000) * 35; // 35 days
+  var newDate = new Date(); // today
+  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 35 days prior to today
+  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  dateOffset = (24 * 60 * 60 * 1000) * 25; // 25 days
+  newDate = new Date(); // today
+  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 25 days prior to today
+  localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
+  this.render(hbs `{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+    reminderAfterClose=30
+    reminderAfterVisit=30
+  }}`);
+
+
   assert.equal(this.$('.ember-smart-banner').length, 0, 'banner is closed');
 });
