@@ -2,6 +2,7 @@
   <div class="ember-smart-banner">
     <div class="ember-smart-banner--title">{{title}}</div>
     <div class="ember-smart-banner--description">{{description}}</div>
-    <a href="{{link}}" class="ember-smart-banner--link" target="_blank">{{linkText}}</a>
+    <a href="{{link}}" class="ember-smart-banner--link" target="_blank" onclick={{action 'openLink'}}>{{linkText}}</a>
+    <button class='ember-smart-banner--close-button' onclick={{action 'closeBanner'}}>X</button>
   </div>
 {{/if}}
