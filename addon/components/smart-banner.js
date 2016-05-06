@@ -43,7 +43,7 @@ export default Ember.Component.extend({
   descriptionIOS: computed.and('iOS', 'config.descriptionIOS'),
   linkTextIOS: computed.and('iOS', 'config.linkTextIOS'),
   appStoreLanguage: computed.reads('config.appStoreLanguage'),
-  appIdIOS: computed.reads('reads.appIdIOS'),
+  appIdIOS: computed.reads('config.appIdIOS'),
   appStoreLink: computed(function() {
     return (this.get('iOS') && (this.get('config.appStoreLink') || 'https://itunes.apple.com/' + this.get('appStoreLanguage') + '/app/' + this.get('appIdIOS')));
   }),
