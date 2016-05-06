@@ -21,7 +21,7 @@ module.exports = function(environment) {
     emberSmartBanner: {
       title: 'App Title',
       description: 'Description',
-      linkText: 'Link Text',
+      linkText: 'View',
       iOS: true,
       appIdIOS: '123',
       appStoreLanguage: 'en',
