@@ -18,10 +18,13 @@ module.exports = function(environment) {
       // when it is created
     },
 
-    emberSmartBanner: {    
+    emberSmartBanner: {
       title: 'App Title',
-      description: 'Description',
-      linkText: 'Link Text',     
+      description: 'Description',
+      linkText: 'Link Text',
+      iOS: true,
+      appIdIOS: '123',
+      appStoreLanguage: 'en'
     }
   };
 
