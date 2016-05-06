@@ -1,3 +1,4 @@
+/* global localStorage */
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -145,19 +146,59 @@ test('is can set linkText through template', function(assert) {
   let smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--link').text(), 'TEST Link', 'The link text is set correctly.');
 });
+//
+// test('is can set iconUrl through template', function(assert) {
+//   this.set('iOS', true);
+//   this.set('appIdIOS', 123);
+//   this.set('appStoreLanguage', 'en');
+//
+//   this.render(hbs`{{smart-banner
+//     iconUrl="https://www.example.com/"
+//     iOS=iOS
+//     appIdIOS=appIdIOS
+//     appStoreLanguage=appStoreLanguage
+//   }}`);
+//
+//   let smartBanner = this.$();
+//   assert.equal(smartBanner.find('.ember-smart-banner--icon').attr('href'), 'https://www.example.com/', 'The Link Text is set correctly.');
+// });
 
-test('is can set iconUrl through template', function(assert) {
+test("should successfully record click of close button ", function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
+  this.set('android', false);
+  this.set('appIdAndroid', null);
   this.set('appStoreLanguage', 'en');
-
-  this.render(hbs`{{smart-banner
-    iconUrl="https://www.example.com/"
+  localStorage.clear();
+  this.render(hbs `{{smart-banner
     iOS=iOS
     appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  let smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--icon').attr('href'), 'https://www.example.com/', 'The Link Text is set correctly.');
+  // Click close button and assert that lastDayClosed is stored;
+  this.$('.ember-smart-banner--close-button').click();
+  assert.ok(localStorage.getItem('ember-smart-banner.lastDayClosed'), 'click of close button is stored correctly');
+});
+
+test("should successfully record click of link", function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('android', false);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
+  localStorage.clear();
+  this.render(hbs `{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+  }}`);
+
+  // Click close button and assert that lastDayClosed is stored;
+  this.$('.ember-smart-banner--link').click();
+  assert.ok(localStorage.getItem('ember-smart-banner.lastDayVisited'), 'click of link is stored correctly');
 });
