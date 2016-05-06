@@ -24,7 +24,8 @@ module.exports = function(environment) {
       linkText: 'Link Text',
       iOS: true,
       appIdIOS: '123',
-      appStoreLanguage: 'en'
+      appStoreLanguage: 'en',
+      iconUrl: 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png'
     }
   };
 
