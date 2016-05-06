@@ -18,7 +18,7 @@ export default Ember.Component.extend({
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText'),
   iconUrl: computed.reads('config.iconUrl'),
   showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
-  alwayShowBanner: computed.reads('config.alwayShowBanner'), // Overrides showBannerReminder
+  alwayShowBanner: computed.reads('config.alwayShowBanner'), // Overrides afterCloseBool && afterVisitBool
   link: computed.or('appStoreLink', 'marketLink', 'config.link'),
 
   mobileOperatingSystem: computed(function() {
