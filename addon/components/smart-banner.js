@@ -36,7 +36,7 @@ export default Ember.Component.extend({
 
   supportsOS: computed.or('supportsIOS', 'supportAndroid'),
   supportsIOS: computed.and('iOS', 'appIdIOS'),
-  supportAndroid: computed.and('iOS', 'appIdAndroid'),
+  supportAndroid: computed.and('android', 'appIdAndroid'),
 
   iOS: computed.equal('mobileOperatingSystem', 'iOS'),
   android: computed.equal('mobileOperatingSystem', 'Android'),
