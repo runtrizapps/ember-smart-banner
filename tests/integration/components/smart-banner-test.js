@@ -97,3 +97,67 @@ test('it does not render on iOS unless an appId is set', function(assert) {
   // Assert that it is no longer shown
   assert.equal(this.$('.ember-smart-banner').length, 0, 'banner is not rendered');
 });
+
+test('is can set title through template', function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('appStoreLanguage', 'en');
+
+  this.render(hbs`{{smart-banner
+    title="TEST Title"
+    iOS=iOS
+    appIdIOS=appIdIOS
+    appStoreLanguage=appStoreLanguage
+  }}`);
+
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--title').text(), 'TEST Title', 'The title is set correctly.');
+});
+
+test('is can set description through template', function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('appStoreLanguage', 'en');
+
+  this.render(hbs`{{smart-banner
+    description="TEST Description"
+    iOS=iOS
+    appIdIOS=appIdIOS
+    appStoreLanguage=appStoreLanguage
+  }}`);
+
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'TEST Description', 'The description is set correctly.');
+});
+
+test('is can set linkText through template', function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('appStoreLanguage', 'en');
+
+  this.render(hbs`{{smart-banner
+    linkText="TEST Link"
+    iOS=iOS
+    appIdIOS=appIdIOS
+    appStoreLanguage=appStoreLanguage
+  }}`);
+
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--link').text(), 'TEST Link', 'The link text is set correctly.');
+});
+
+test('is can set iconUrl through template', function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('appStoreLanguage', 'en');
+
+  this.render(hbs`{{smart-banner
+    iconUrl="https://www.example.com/"
+    iOS=iOS
+    appIdIOS=appIdIOS
+    appStoreLanguage=appStoreLanguage
+  }}`);
+
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--icon').attr('href'), 'https://www.example.com/', 'The Link Text is set correctly.');
+});
