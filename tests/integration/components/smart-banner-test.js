@@ -40,11 +40,11 @@ test('it does not render on iOS unless an appId is set', function(assert) {
   }}`);
 
   // Assert that it is no longer shown
-  assert.equal(this.$('.ember-smart-banner--link').length, 0, 'link is not rendered');
+  assert.equal(this.$('.ember-smart-banner').length, 0, 'banner is not rendered');
 });
 
 test('it does not render on iOS unless iOS platform detected', function(assert) {
-  this.set('iOS', true);
+  this.set('iOS', false);
   this.set('appIdIOS', 123);
   this.set('android', false);
   this.set('appIdAndroid', null);
@@ -58,49 +58,42 @@ test('it does not render on iOS unless iOS platform detected', function(assert) 
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  // TODO Assert that it renders with appStore link
-
-  this.set('iOS', false);
-
-  // TODO Assert that it is no longer shown
+  assert.equal(this.$('.ember-smart-banner').length, 0, 'banner is not rendered');
 });
 
-test('it does not render on Android unless appId is set', function(assert) {
+test('it renders on iOS when an appId is set', function(assert) {
   this.set('iOS', false);
   this.set('appIdIOS', null);
   this.set('android', true);
   this.set('appIdAndroid', 123);
+  this.set('appStoreLanguage', 'en');
 
   this.render(hbs`{{smart-banner
     iOS=iOS
-    iOSAppId=iOSAppId
+    appIdIOS=appIdIOS
     android=android
     appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
   }}`);
+  // Assert that it renders with android link
+  assert.equal(this.$('.ember-smart-banner--link').attr('href'), 'market://details?id=123');
+});
 
-  // TODO Assert that it renders with appStore link
-
+test('it does not render on iOS unless an appId is set', function(assert) {
+  this.set('iOS', false);
+  this.set('appIdIOS', null);
+  this.set('android', true);
   this.set('appIdAndroid', null);
-
-  // TODO Assert that it is no longer shown
-});
-
-test('it does not render on Android unless Android platform detected', function(assert) {
-  this.set('iOS', false);
-  this.set('appIdIOS', null);
-  this.set('android', true);
-  this.set('appIdAndroid', 123);
+  this.set('appStoreLanguage', 'en');
 
   this.render(hbs`{{smart-banner
     iOS=iOS
-    iOSAppId=iOSAppId
+    appIdIOS=appIdIOS
     android=android
     appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
   }}`);
 
-  // TODO Assert that it renders with appStore link
-
-  this.set('android', false);
-
-  // TODO Assert that it is no longer shown
+  // Assert that it is no longer shown
+  assert.equal(this.$('.ember-smart-banner').length, 0, 'banner is not rendered');
 });

@@ -1,8 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 
-moduleForComponent('ember-smart-banner', 'Unit | Component | ember smart banner', {
+moduleForComponent('smart-banner', 'Unit | Component | smart banner', {
   // Specify the other units that are required for this test
-  // needs: ['component:foo', 'helper:bar'],
+  needs: ['config:environment'],
   unit: true
 });
 
@@ -14,8 +14,3 @@ test('it renders', function(assert) {
   this.render();
   assert.equal(this.$().text().trim(), '');
 });
-
-// TODO - unit tests
-//  test store link building?
-//  gather a few test UserAgent strings and test detection?
-//  perhaps test the result of title/description based on platform
