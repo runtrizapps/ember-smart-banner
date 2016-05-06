@@ -18,7 +18,7 @@ export default Ember.Component.extend({
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText'),
   iconUrl: computed.reads('config.iconUrl'),
   showBannerReminder: computed.or('alwayShowBanner', 'afterCloseBool', 'afterVisitBool', 'showBannerDefault'),
-  showBanner: computed.and('showBannerReminder', 'openBanner', 'supportsOS'), // Set showBanner to true to always show
+  showBanner: computed.and('showBannerReminder', 'bannerOpen', 'supportsOS'), // Set showBanner to true to always show
   alwayShowBanner: computed.reads('config.alwayShowBanner'), // Overrides showBannerReminder
   showBannerDefault: true,
   link: computed.or('appStoreLink', 'marketLink', 'config.link'),
@@ -58,16 +58,17 @@ export default Ember.Component.extend({
     return (this.get('android') && (this.get('config.marketLink') || 'market://details?id=' + this.get('appIdAndroid')));
   }),
 
-  closeBanner: false,
-  openBanner: computed.not('closeBanner'),
+  bannerClosed: false,
+  bannerOpen: computed.not('bannerClosed'),
 
   actions: {
     openLink: function() {
+      this.set('bannerClosed', true);
       this.setTimeStamp('lastDayVisited');
     },
 
     closeBanner: function() {
-      this.set('closeBanner', true);
+      this.set('bannerClosed', true);
       this.setTimeStamp('lastDayClosed');
     }
   },
