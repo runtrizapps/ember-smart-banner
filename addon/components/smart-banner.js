@@ -100,8 +100,17 @@ export default Ember.Component.extend({
   afterCloseUndefined: computed.none('reminderAfterClose'),
   afterVisitUndefined: computed.none('reminderAfterVisit'),
 
-  afterCloseBool: computed.gte('daysSinceClose', 'reminderAfterClose'),
-  afterVisitBool: computed.gte('daysSinceVisit', 'reminderAfterVisit'),
+  afterCloseBool: computed('daysSinceClose', 'reminderAfterClose', function() {
+    return this.gteDependentKeys('daysSinceClose', 'reminderAfterClose');
+  }),
+
+  afterVisitBool: computed('daysSinceVisit', 'reminderAfterVisit', function() {
+    return this.gteDependentKeys('daysSinceVisit', 'reminderAfterVisit');
+  }),
+
+  gteDependentKeys(firstKey, secondKey) {
+    return (this.get(firstKey) >= this.get(secondKey));
+  },
 
   daysSinceClose: computed(function() {
     const timeSinceClosed = new Date() - Date.parse(this.getItem('lastDayClosed'));
