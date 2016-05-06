@@ -202,3 +202,27 @@ test("should successfully record click of link", function(assert) {
   this.$('.ember-smart-banner--link').click();
   assert.ok(localStorage.getItem('ember-smart-banner.lastDayVisited'), 'click of link is stored correctly');
 });
+
+test("banner should be closed if number of days since the banner was closed is greater than set reminder", function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('android', false);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
+  localStorage.clear();
+  var dateOffset = (24 * 60 * 60 * 1000) * 30; //30 days
+  var newDate = new Date(); // today
+  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 30 days from today
+  this.render(hbs `{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+    reminderAfterClose=30
+  }}`);
+
+  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  // Assert that it is no longer shown
+  assert.equal(this.$('.ember-smart-banner').length, 1, 'banner is rendered');
+});
