@@ -203,7 +203,7 @@ test("should successfully record click of link", function(assert) {
   assert.ok(localStorage.getItem('ember-smart-banner.lastDayVisited'), 'click of link is stored correctly');
 });
 
-test("banner should be closed if number of days since the banner was closed is greater than set reminder", function(assert) {
+test("banner should be open if number of days since the banner was closed is greater than set reminder", function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
