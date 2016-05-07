@@ -1,5 +1,4 @@
 {{#if showBanner}}
-  <div class="ember-smart-banner">
     <a href="#" class='ember-smart-banner--close-button' onclick={{action 'closeBanner'}}>&times;</a>
     <a href class="ember-smart-banner--icon" style='background-image: url({{iconUrl}})'></a>
     <div class="ember-smart-banner--info">
@@ -9,5 +8,4 @@
     <a href="{{link}}" class="ember-smart-banner--view-button" target="_blank" onclick={{action 'openLink'}}>
       <span>{{linkText}}</span>
     </a>
-  </div>
 {{/if}}
