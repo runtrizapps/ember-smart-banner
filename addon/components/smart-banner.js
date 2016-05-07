@@ -8,6 +8,7 @@ const {
 import getOwner from 'ember-getowner-polyfill';
 
 export default Ember.Component.extend({
+  classNames: ['ember-smart-banner'],
   // http://discuss.emberjs.com/t/best-practices-accessing-app-config-from-addon-code/7006/16
   config: computed(function() {
     return getOwner(this).resolveRegistration('config:environment').emberSmartBanner;
