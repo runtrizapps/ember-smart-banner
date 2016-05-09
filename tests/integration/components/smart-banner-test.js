@@ -62,7 +62,7 @@ test('it does not render on iOS unless iOS platform detected', function(assert) 
   assert.equal(this.$('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
-test('it renders on iOS when an appId is set', function(assert) {
+test('it renders on Android when an appId is set', function(assert) {
   this.set('iOS', false);
   this.set('appIdIOS', null);
   this.set('android', true);
@@ -80,7 +80,7 @@ test('it renders on iOS when an appId is set', function(assert) {
   assert.equal(this.$('.ember-smart-banner--view-button').attr('href'), 'market://details?id=123');
 });
 
-test('it does not render on iOS unless an appId is set', function(assert) {
+test('it does not render on Android unless an appId is set', function(assert) {
   this.set('iOS', false);
   this.set('appIdIOS', null);
   this.set('android', true);
@@ -170,6 +170,8 @@ test("should successfully record click of close button ", function(assert) {
   this.set('appIdAndroid', null);
   this.set('appStoreLanguage', 'en');
   localStorage.clear();
+  assert.notOk(localStorage.getItem('ember-smart-banner.lastDayClosed'), 'click of close button is not present before render/click');
+
   this.render(hbs `{{smart-banner
     iOS=iOS
     appIdIOS=appIdIOS
@@ -190,6 +192,8 @@ test("should successfully record click of link", function(assert) {
   this.set('appIdAndroid', null);
   this.set('appStoreLanguage', 'en');
   localStorage.clear();
+  assert.notOk(localStorage.getItem('ember-smart-banner.lastDayVisited'), 'click of link is not present before render/click');
+
   this.render(hbs `{{smart-banner
     iOS=iOS
     appIdIOS=appIdIOS
