@@ -99,8 +99,6 @@ export default Ember.Component.extend({
 
   reminderAfterClose: computed.reads('config.reminderAfterClose'), // Number of days after user closes banner to wait to show banner again, 0 for always show
   reminderAfterVisit: computed.reads('config.reminderAfterVisit'), // Number of days after visit to wait to show banner again, 0 for always show
-  afterCloseUndefined: computed.none('reminderAfterClose'),
-  afterVisitUndefined: computed.none('reminderAfterVisit'),
 
   afterCloseBool: computed('daysSinceClose', 'reminderAfterClose', 'alwayShowBanner', function() {
     if (!this.get('reminderAfterClose')  || this.get('alwaysShowBanner')) {
