@@ -99,6 +99,21 @@ test('it does not render on Android unless an appId is set', function(assert) {
   assert.equal(this.$('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
+test('it renders config parameters', function(assert) {
+  this.set('iOS', true);
+
+  this.render(hbs`{{smart-banner
+    iOS=iOS
+  }}`);
+
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--title').text(), 'App Title', 'The title is set correctly.');
+  assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'Description', 'The description is set correctly.');
+  assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'View', 'The link text is set correctly.');
+  assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/123');
+  assert.equal(smartBanner.find('.ember-smart-banner--icon').attr('style'), 'background-image: url(http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png)');
+});
+
 test('is can set title through template', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
