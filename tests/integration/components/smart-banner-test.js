@@ -41,7 +41,7 @@ test('it does not render on iOS unless an appId is set', function(assert) {
   }}`);
 
   // Assert that it is no longer shown
-  assert.equal(this.$('.ember-smart-banner').length, 0, 'banner is not rendered');
+  assert.equal(this.$('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
 test('it does not render on iOS unless iOS platform detected', function(assert) {
@@ -59,7 +59,7 @@ test('it does not render on iOS unless iOS platform detected', function(assert) 
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  assert.equal(this.$('.ember-smart-banner').length, 0, 'banner is not rendered');
+  assert.equal(this.$('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
 test('it renders on iOS when an appId is set', function(assert) {
@@ -96,7 +96,7 @@ test('it does not render on iOS unless an appId is set', function(assert) {
   }}`);
 
   // Assert that it is no longer shown
-  assert.equal(this.$('.ember-smart-banner').length, 0, 'banner is not rendered');
+  assert.equal(this.$('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
 test('is can set title through template', function(assert) {
@@ -223,7 +223,7 @@ test("banner should be open if number of days since the banner was closed is equ
     reminderAfterClose=30
   }}`);
 
-  assert.equal(this.$('.ember-smart-banner').length, 1, 'banner is open');
+  assert.equal(this.$('.ember-smart-banner--inner').length, 1, 'banner is open');
 
 
 });
@@ -248,7 +248,7 @@ test("banner should be open if number of days since the banner was closed is gre
     reminderAfterClose=30
   }}`);
 
-  assert.equal(this.$('.ember-smart-banner').length, 1, 'banner is open');
+  assert.equal(this.$('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
 
 test("banner should be closed if number of days since the banner was closed is less than set reminder", function(assert) {
@@ -271,7 +271,7 @@ test("banner should be closed if number of days since the banner was closed is l
     reminderAfterClose=30
   }}`);
 
-  assert.equal(this.$('.ember-smart-banner').length, 0, 'banner is closed');
+  assert.equal(this.$('.ember-smart-banner--inner').length, 0, 'banner is closed');
 });
 
 test("banner should be open in complex scenario", function(assert) {
@@ -299,7 +299,7 @@ test("banner should be open in complex scenario", function(assert) {
     reminderAfterVisit=30
   }}`);
 
-  assert.equal(this.$('.ember-smart-banner').length, 1, 'banner is open');
+  assert.equal(this.$('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
 
 test("banner should be closed in complex scenario", function(assert) {
@@ -328,7 +328,7 @@ test("banner should be closed in complex scenario", function(assert) {
   }}`);
 
 
-  assert.equal(this.$('.ember-smart-banner').length, 0, 'banner is closed');
+  assert.equal(this.$('.ember-smart-banner--inner').length, 0, 'banner is closed');
 });
 
 test("banner should be open in complex scenario with alwayShowBanner set to true", function(assert) {
@@ -358,5 +358,5 @@ test("banner should be open in complex scenario with alwayShowBanner set to true
     alwaysShowBanner=alwaysShowBanner
   }}`);
 
-  assert.equal(this.$('.ember-smart-banner').length, 1, 'banner is open');
+  assert.equal(this.$('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
