@@ -94,7 +94,7 @@ export default Ember.Component.extend({
   namespace: 'ember-smart-banner',
 
   _namespacedKey(keyName) {
-    return this.get('namespace') + `.${keyName}`;
+    return `${this.get('namespace')}.${keyName}`;
   },
 
   reminderAfterClose: computed.reads('config.reminderAfterClose'), // Number of days after user closes banner to wait to show banner again, 0 for always show
