@@ -1,13 +1,16 @@
 /* global window, localStorage, navigator */
 
 import Ember from 'ember';
+import layout from '../templates/components/smart-banner';
+import getOwner from 'ember-getowner-polyfill';
+
 const {
   computed,
 } = Ember;
 
-import getOwner from 'ember-getowner-polyfill';
-
 export default Ember.Component.extend({
+  layout,
+
   classNames: ['ember-smart-banner'],
   // http://discuss.emberjs.com/t/best-practices-accessing-app-config-from-addon-code/7006/16
   config: computed(function() {
