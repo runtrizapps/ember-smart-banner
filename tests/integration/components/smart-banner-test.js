@@ -22,7 +22,7 @@ test('it renders on iOS when an appId is set', function(assert) {
   }}`);
 
   // Assert that it renders with appStore link
-  assert.equal(this.$('.ember-smart-banner--link').attr('href'), 'https://itunes.apple.com/en/app/123');
+  assert.equal(this.$('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/123');
 });
 
 test('it does not render on iOS unless an appId is set', function(assert) {
@@ -77,7 +77,7 @@ test('it renders on iOS when an appId is set', function(assert) {
     appStoreLanguage=appStoreLanguage
   }}`);
   // Assert that it renders with android link
-  assert.equal(this.$('.ember-smart-banner--link').attr('href'), 'market://details?id=123');
+  assert.equal(this.$('.ember-smart-banner--view-button').attr('href'), 'market://details?id=123');
 });
 
 test('it does not render on iOS unless an appId is set', function(assert) {
@@ -144,7 +144,7 @@ test('is can set linkText through template', function(assert) {
   }}`);
 
   let smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--link').text(), 'TEST Link', 'The link text is set correctly.');
+  assert.equal(smartBanner.find('.ember-smart-banner--view-button').text(), 'TEST Link', 'The link text is set correctly.');
 });
 //
 // test('is can set iconUrl through template', function(assert) {
@@ -199,7 +199,7 @@ test("should successfully record click of link", function(assert) {
   }}`);
 
   // Click close button and assert that lastDayClosed is stored;
-  this.$('.ember-smart-banner--link').click();
+  this.$('.ember-smart-banner--view-button').click();
   assert.ok(localStorage.getItem('ember-smart-banner.lastDayVisited'), 'click of link is stored correctly');
 });
 
