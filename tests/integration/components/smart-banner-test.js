@@ -22,7 +22,7 @@ test('it renders on iOS when an appId is set', function(assert) {
   }}`);
 
   let smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/123');
+  assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/id123');
 });
 
 test('it does not render on iOS unless an appId is set', function(assert) {
@@ -112,7 +112,7 @@ test('it renders config parameters', function(assert) {
   assert.equal(smartBanner.find('.ember-smart-banner--title').text(), 'App Title', 'The title is set correctly.');
   assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'Description', 'The description is set correctly.');
   assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'View', 'The link text is set correctly.');
-  assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/123');
+  assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/id123');
   assert.equal(smartBanner.find('.ember-smart-banner--icon').attr('style'), 'background-image: url(http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png)');
 });
 

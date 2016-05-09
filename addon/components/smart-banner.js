@@ -46,10 +46,17 @@ export default Ember.Component.extend({
   titleIOS: computed.and('iOS', 'config.titleIOS'),
   descriptionIOS: computed.and('iOS', 'config.descriptionIOS'),
   linkTextIOS: computed.and('iOS', 'config.linkTextIOS'),
-  appStoreLanguage: computed.reads('config.appStoreLanguage'),
-  appIdIOS: computed.reads('config.appIdIOS'),
+  appStoreLanguage: computed.or('config.appStoreLanguage', 'bannerDefaults.appStoreLanguage'),
+  appIdIOS: computed.or('config.appIdIOS', 'bannerDefaults.appIdIOS'),
   appStoreLink: computed(function() {
-    return (this.get('iOS') && (this.get('config.appStoreLink') || 'https://itunes.apple.com/' + this.get('appStoreLanguage') + '/app/' + this.get('appIdIOS')));
+    return (
+      this.get('iOS') && (
+        this.get('config.appStoreLink') || (
+          `${this.get('bannerDefaults.appStoreLinkBase')}/${this.get('appStoreLanguage')}` +
+            `/app/id${this.get('appIdIOS')}`
+        )
+      )
+    );
   }),
 
   titleAndroid: computed.and('android', 'config.titleAndroid'),
@@ -57,8 +64,18 @@ export default Ember.Component.extend({
   linkTextAndroid: computed.and('android', 'config.linkTextAndroid'),
   appIdAndroid: computed.reads('reads.appIdAndroid'),
   marketLink: computed(function() {
-    return (this.get('android') && (this.get('config.marketLink') || 'market://details?id=' + this.get('appIdAndroid')));
+    return (this.get('android') && (
+      this.get('config.marketLink') || 'market://details?id=' + this.get('appIdAndroid'))
+    );
   }),
+
+  bannerDefaults: {
+    appStoreLinkBase: 'https://itunes.apple.com',
+    appStoreLanguage: 'en',
+    addIdIOS: '123',
+    marketLinkBase: 'market://details?id=',
+    appIdAndroid: '123'
+  },
 
   bannerClosed: false,
   bannerOpen: computed.not('bannerClosed'),
