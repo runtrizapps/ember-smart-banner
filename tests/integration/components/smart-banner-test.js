@@ -21,8 +21,8 @@ test('it renders on iOS when an appId is set', function(assert) {
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  // Assert that it renders with appStore link
-  assert.equal(this.$('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/123');
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/123');
 });
 
 test('it does not render on iOS unless an appId is set', function(assert) {
@@ -40,8 +40,8 @@ test('it does not render on iOS unless an appId is set', function(assert) {
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  // Assert that it is no longer shown
-  assert.equal(this.$('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
 test('it does not render on iOS unless iOS platform detected', function(assert) {
@@ -59,7 +59,8 @@ test('it does not render on iOS unless iOS platform detected', function(assert) 
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  assert.equal(this.$('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
 test('it renders on Android when an appId is set', function(assert) {
@@ -76,8 +77,9 @@ test('it renders on Android when an appId is set', function(assert) {
     appIdAndroid=appIdAndroid
     appStoreLanguage=appStoreLanguage
   }}`);
-  // Assert that it renders with android link
-  assert.equal(this.$('.ember-smart-banner--view-button').attr('href'), 'market://details?id=123');
+
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'market://details?id=123', 'it renders with android link');
 });
 
 test('it does not render on Android unless an appId is set', function(assert) {
@@ -95,8 +97,8 @@ test('it does not render on Android unless an appId is set', function(assert) {
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  // Assert that it is no longer shown
-  assert.equal(this.$('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
 test('it renders config parameters', function(assert) {
@@ -178,7 +180,7 @@ test('is can set iconUrl through template', function(assert) {
   assert.equal(smartBanner.find('.ember-smart-banner--icon').attr('style'), 'background-image: url(https://www.example.com/)');
 });
 
-test("should successfully record click of close button ", function(assert) {
+test('should successfully record click of close button ', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -196,11 +198,12 @@ test("should successfully record click of close button ", function(assert) {
   }}`);
 
   // Click close button and assert that lastDayClosed is stored;
-  this.$('.ember-smart-banner--close-button').click();
+  let smartBanner = this.$();
+  smartBanner.find('.ember-smart-banner--close-button').click();
   assert.ok(localStorage.getItem('ember-smart-banner.lastDayClosed'), 'click of close button is stored correctly');
 });
 
-test("should successfully record click of link", function(assert) {
+test('should successfully record click of link', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -218,11 +221,12 @@ test("should successfully record click of link", function(assert) {
   }}`);
 
   // Click close button and assert that lastDayClosed is stored;
-  this.$('.ember-smart-banner--view-button').click();
+  let smartBanner = this.$();
+  smartBanner.find('.ember-smart-banner--view-button').click();
   assert.ok(localStorage.getItem('ember-smart-banner.lastDayVisited'), 'click of link is stored correctly');
 });
 
-test("banner should be open if number of days since the banner was closed is equal to the set reminder", function(assert) {
+test('banner should be open if number of days since the banner was closed is equal to the set reminder', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -233,6 +237,7 @@ test("banner should be open if number of days since the banner was closed is equ
   var newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 30 days from today
   localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+
   this.render(hbs `{{smart-banner
     iOS=iOS
     appIdIOS=appIdIOS
@@ -242,12 +247,11 @@ test("banner should be open if number of days since the banner was closed is equ
     reminderAfterClose=30
   }}`);
 
-  assert.equal(this.$('.ember-smart-banner--inner').length, 1, 'banner is open');
-
-
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
 
-test("banner should be open if number of days since the banner was closed is greater than the set reminder", function(assert) {
+test('banner should be open if number of days since the banner was closed is greater than the set reminder', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -267,10 +271,11 @@ test("banner should be open if number of days since the banner was closed is gre
     reminderAfterClose=30
   }}`);
 
-  assert.equal(this.$('.ember-smart-banner--inner').length, 1, 'banner is open');
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
 
-test("banner should be closed if number of days since the banner was closed is less than set reminder", function(assert) {
+test('banner should be closed if number of days since the banner was closed is less than set reminder', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -290,10 +295,11 @@ test("banner should be closed if number of days since the banner was closed is l
     reminderAfterClose=30
   }}`);
 
-  assert.equal(this.$('.ember-smart-banner--inner').length, 0, 'banner is closed');
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
 });
 
-test("banner should be open in complex scenario", function(assert) {
+test('banner should be open in complex scenario', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -318,10 +324,11 @@ test("banner should be open in complex scenario", function(assert) {
     reminderAfterVisit=30
   }}`);
 
-  assert.equal(this.$('.ember-smart-banner--inner').length, 1, 'banner is open');
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
 
-test("banner should be closed in complex scenario", function(assert) {
+test('banner should be closed in complex scenario', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -346,11 +353,11 @@ test("banner should be closed in complex scenario", function(assert) {
     reminderAfterVisit=30
   }}`);
 
-
-  assert.equal(this.$('.ember-smart-banner--inner').length, 0, 'banner is closed');
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
 });
 
-test("banner should be open in complex scenario with alwayShowBanner set to true", function(assert) {
+test('banner should be open in complex scenario with alwayShowBanner set to true', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -377,5 +384,6 @@ test("banner should be open in complex scenario with alwayShowBanner set to true
     alwaysShowBanner=alwaysShowBanner
   }}`);
 
-  assert.equal(this.$('.ember-smart-banner--inner').length, 1, 'banner is open');
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
