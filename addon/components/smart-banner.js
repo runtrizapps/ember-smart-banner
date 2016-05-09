@@ -25,23 +25,23 @@ export default Ember.Component.extend({
   alwayShowBanner: computed.reads('config.alwayShowBanner'), // Overrides afterCloseBool && afterVisitBool
   link: computed.or('appStoreLink', 'marketLink', 'config.link'),
 
-  mobileOperatingSystem: computed(function() {
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i)) {
-      return 'iOS';
-    } else if (userAgent.match(/Android/i)) {
-      return 'Android';
-    } else {
-      return 'unknown';
-    }
+  userAgent: computed(function() {
+    return (navigator.userAgent || navigator.vendor || window.opera);
   }),
 
   supportsOS: computed.or('supportsIOS', 'supportAndroid'),
   supportsIOS: computed.and('iOS', 'appIdIOS'),
   supportAndroid: computed.and('android', 'appIdAndroid'),
 
-  iOS: computed.equal('mobileOperatingSystem', 'iOS'),
-  android: computed.equal('mobileOperatingSystem', 'Android'),
+  iOS: computed('userAgent', function() {
+    const userAgent = this.get('userAgent');
+    return (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i));
+  }),
+
+  android: computed('userAgent', function() {
+    const userAgent = this.get('userAgent');
+    return (userAgent.match(/Android/i));
+  }),
 
   titleIOS: computed.and('iOS', 'config.titleIOS'),
   descriptionIOS: computed.and('iOS', 'config.descriptionIOS'),
