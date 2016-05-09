@@ -144,7 +144,7 @@ test('is can set linkText through template', function(assert) {
   }}`);
 
   let smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--view-button').text(), 'TEST Link', 'The link text is set correctly.');
+  assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'TEST Link', 'The link text is set correctly.');
 });
 //
 // test('is can set iconUrl through template', function(assert) {
