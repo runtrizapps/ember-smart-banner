@@ -22,7 +22,6 @@ module.exports = function(environment) {
       title: 'App Title',
       description: 'Description',
       linkText: 'View',
-      iOS: true,
       appIdIOS: '123',
       appStoreLanguage: 'en',
       iconUrl: 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png'
