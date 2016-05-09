@@ -21,7 +21,7 @@ export default Ember.Component.extend({
   description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description', 'bannerDefaults.description'),
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText', 'bannerDefaults.linkText'),
   iconUrl: computed.reads('config.iconUrl'),
-  showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
+  showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBoolOrAlwaysShow', 'afterVisitBoolOrAlwaysShow'), // Set showBanner to true to always show
   alwayShowBanner: computed.reads('config.alwayShowBanner'), // Overrides afterCloseBool && afterVisitBool
   link: computed.or('appStoreLink', 'marketLink', 'config.link'),
 
@@ -120,8 +120,7 @@ export default Ember.Component.extend({
   reminderAfterVisit: computed.reads('config.reminderAfterVisit'), // Number of days after visit to wait to show banner again, 0 for always show
 
   afterCloseBool: computed('daysSinceClose', 'reminderAfterClose', 'alwayShowBanner', function() {
-    //TODO - extract 'always' logic from this property
-    if (!this.get('reminderAfterClose')  || this.get('alwaysShowBanner')) {
+    if (!this.get('reminderAfterClose')) {
       return true;
     }
 
@@ -129,12 +128,27 @@ export default Ember.Component.extend({
   }),
 
   afterVisitBool: computed('daysSinceVisit', 'reminderAfterVisit', 'alwayShowBanner', function() {
-    //TODO - extract 'always' logic from this property
-    if (!this.get('reminderAfterVisit') || this.get('alwaysShowBanner')) {
+    if (!this.get('reminderAfterVisit')) {
       return true;
     }
 
     return this.gteDependentKeys('daysSinceVisit', 'reminderAfterVisit');
+  }),
+
+  afterCloseBoolOrAlwaysShow: computed(function() {
+    if (this.get('alwaysShowBanner')) {
+      return true;
+    }
+
+    return this.get('afterCloseBool');
+  }),
+
+  afterVisitBoolOrAlwaysShow: computed(function() {
+    if (this.get('alwaysShowBanner')) {
+      return true;
+    }
+
+    return this.get('afterVisitBool');
   }),
 
   gteDependentKeys(firstKey, secondKey) {
