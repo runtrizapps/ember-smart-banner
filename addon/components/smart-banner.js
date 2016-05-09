@@ -18,8 +18,8 @@ export default Ember.Component.extend({
   }),
 
   title: computed.or('titleIOS', 'titleAndroid', 'config.title'),
-  description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description'),
-  linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText'),
+  description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description', 'bannerDefaults.description'),
+  linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText', 'bannerDefaults.linkText'),
   iconUrl: computed.reads('config.iconUrl'),
   showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
   alwayShowBanner: computed.reads('config.alwayShowBanner'), // Overrides afterCloseBool && afterVisitBool
@@ -74,7 +74,9 @@ export default Ember.Component.extend({
     appStoreLanguage: 'en',
     addIdIOS: '123',
     marketLinkBase: 'market://details?id=',
-    appIdAndroid: '123'
+    appIdAndroid: '123',
+    description: 'Company Name, Inc.',
+    linkText: 'View'
   },
 
   bannerClosed: false,
