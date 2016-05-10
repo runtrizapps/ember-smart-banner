@@ -3,19 +3,17 @@
 import Ember from 'ember';
 import layout from '../templates/components/smart-banner';
 import getOwner from 'ember-getowner-polyfill';
-import localStorage from '../utils/local-storage';
 import bannerStorage from '../utils/banner-storage';
-
-const {
-  getItem,
-} = localStorage;
 
 const {
   computed,
 } = Ember;
 
 const {
-  setTimeStamp,
+  getDayClosed,
+  getDayVisited,
+  setDayClosed,
+  setDayVisited,
 } = bannerStorage;
 
 export default Ember.Component.extend({
@@ -94,12 +92,12 @@ export default Ember.Component.extend({
   actions: {
     openLink: function() {
       this.set('bannerClosed', true);
-      setTimeStamp('lastDayVisited');
+      setDayVisited();
     },
 
     closeBanner: function() {
       this.set('bannerClosed', true);
-      setTimeStamp('lastDayClosed');
+      setDayClosed();
     }
   },
 
@@ -114,7 +112,7 @@ export default Ember.Component.extend({
       return true;
     }
 
-    if (!reminder && getItem('lastDayClosed')) {
+    if (!reminder && getDayClosed()) {
       return false;
     }
 
@@ -127,7 +125,7 @@ export default Ember.Component.extend({
       return true;
     }
 
-    if (!reminder  && getItem('lastDayVisited')) {
+    if (!reminder  && getDayVisited()) {
       return false;
     }
 
@@ -139,12 +137,12 @@ export default Ember.Component.extend({
   },
 
   daysSinceClose: computed(function() {
-    const timeSinceClosed = new Date() - Date.parse(getItem('lastDayClosed'));
+    const timeSinceClosed = new Date() - Date.parse(getDayClosed());
     return Math.floor(timeSinceClosed / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
 
   daysSinceVisit: computed(function() {
-    const timeSinceVisited = new Date() - Date.parse(getItem('lastDayVisited'));
+    const timeSinceVisited = new Date() - Date.parse(getDayVisited());
     return Math.floor(timeSinceVisited / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
 
