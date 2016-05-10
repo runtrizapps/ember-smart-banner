@@ -21,8 +21,7 @@ export default Ember.Component.extend({
   description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description', 'bannerDefaults.description'),
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText', 'bannerDefaults.linkText'),
   iconUrl: computed.reads('config.iconUrl'),
-  showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBoolOrAlwaysShow', 'afterVisitBoolOrAlwaysShow'), // Set showBanner to true to always show
-  alwayShowBanner: computed.reads('config.alwayShowBanner'), // Overrides afterCloseBool && afterVisitBool
+  showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
   link: computed.or('appStoreLink', 'marketLink', 'config.link'),
 
   userAgent: computed(function() {
@@ -119,36 +118,30 @@ export default Ember.Component.extend({
   reminderAfterClose: computed.reads('config.reminderAfterClose'), // Number of days after user closes banner to wait to show banner again, 0 for always show
   reminderAfterVisit: computed.reads('config.reminderAfterVisit'), // Number of days after visit to wait to show banner again, 0 for always show
 
-  afterCloseBool: computed('daysSinceClose', 'reminderAfterClose', 'alwayShowBanner', function() {
-    if (typeof this.get('reminderAfterClose') === 'undefined') {
+  afterCloseBool: computed('daysSinceClose', 'reminderAfterClose', function() {
+    const reminder = this.get('reminderAfterClose');
+    if (typeof reminder  === 'undefined' || reminder === true) {
       return true;
+    }
+
+    if (!reminder && this.getItem('lastDayClosed')) {
+      return false;
     }
 
     return this.gteDependentKeys('daysSinceClose', 'reminderAfterClose');
   }),
 
-  afterVisitBool: computed('daysSinceVisit', 'reminderAfterVisit', 'alwayShowBanner', function() {
-    if (typeof this.get('reminderAfterVisit') === 'undefined') {
+  afterVisitBool: computed('daysSinceVisit', 'reminderAfterVisit', function() {
+    const reminder = this.get('reminderAfterVisit');
+    if (typeof reminder  === 'undefined' || reminder === true) {
       return true;
+    }
+
+    if (!reminder  && this.getItem('lastDayVisited')) {
+      return false;
     }
 
     return this.gteDependentKeys('daysSinceVisit', 'reminderAfterVisit');
-  }),
-
-  afterCloseBoolOrAlwaysShow: computed(function() {
-    if (this.get('alwaysShowBanner')) {
-      return true;
-    }
-
-    return this.get('afterCloseBool');
-  }),
-
-  afterVisitBoolOrAlwaysShow: computed(function() {
-    if (this.get('alwaysShowBanner')) {
-      return true;
-    }
-
-    return this.get('afterVisitBool');
   }),
 
   gteDependentKeys(firstKey, secondKey) {
