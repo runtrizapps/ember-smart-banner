@@ -4,15 +4,19 @@ import Ember from 'ember';
 import layout from '../templates/components/smart-banner';
 import getOwner from 'ember-getowner-polyfill';
 import localStorage from '../utils/local-storage';
+import bannerStorage from '../utils/banner-storage';
 
 const {
   getItem,
-  setItem
 } = localStorage;
 
 const {
   computed,
 } = Ember;
+
+const {
+  setTimeStamp,
+} = bannerStorage;
 
 export default Ember.Component.extend({
   layout,
@@ -90,19 +94,16 @@ export default Ember.Component.extend({
   actions: {
     openLink: function() {
       this.set('bannerClosed', true);
-      this.setTimeStamp('lastDayVisited');
+      setTimeStamp('lastDayVisited');
     },
 
     closeBanner: function() {
       this.set('bannerClosed', true);
-      this.setTimeStamp('lastDayClosed');
+      setTimeStamp('lastDayClosed');
     }
   },
 
-  setTimeStamp(key) {
-    const now = new Date();
-    setItem(key, now);
-  },
+
 
   reminderAfterClose: computed.reads('config.reminderAfterClose'), // Number of days after user closes banner to wait to show banner again, 0 for always show
   reminderAfterVisit: computed.reads('config.reminderAfterVisit'), // Number of days after visit to wait to show banner again, 0 for always show
