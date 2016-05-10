@@ -1,8 +1,14 @@
-/* global window, localStorage, navigator */
+/* global window, navigator */
 
 import Ember from 'ember';
 import layout from '../templates/components/smart-banner';
 import getOwner from 'ember-getowner-polyfill';
+import localStorage from '../utils/local-storage';
+
+const {
+  getItem,
+  setItem
+} = localStorage;
 
 const {
   computed,
@@ -95,24 +101,7 @@ export default Ember.Component.extend({
 
   setTimeStamp(key) {
     const now = new Date();
-    this.setItem(key, now);
-  },
-
-  setItem(key, value) {
-    localStorage.setItem(this._namespacedKey(key), JSON.stringify(value));
-  },
-
-  getItem(key) {
-    const result = localStorage.getItem(this._namespacedKey(key));
-    if (result) {
-      return JSON.parse(result);
-    }
-  },
-
-  namespace: 'ember-smart-banner',
-
-  _namespacedKey(keyName) {
-    return `${this.get('namespace')}.${keyName}`;
+    setItem(key, now);
   },
 
   reminderAfterClose: computed.reads('config.reminderAfterClose'), // Number of days after user closes banner to wait to show banner again, 0 for always show
@@ -124,7 +113,7 @@ export default Ember.Component.extend({
       return true;
     }
 
-    if (!reminder && this.getItem('lastDayClosed')) {
+    if (!reminder && getItem('lastDayClosed')) {
       return false;
     }
 
@@ -137,7 +126,7 @@ export default Ember.Component.extend({
       return true;
     }
 
-    if (!reminder  && this.getItem('lastDayVisited')) {
+    if (!reminder  && getItem('lastDayVisited')) {
       return false;
     }
 
@@ -149,12 +138,12 @@ export default Ember.Component.extend({
   },
 
   daysSinceClose: computed(function() {
-    const timeSinceClosed = new Date() - Date.parse(this.getItem('lastDayClosed'));
+    const timeSinceClosed = new Date() - Date.parse(getItem('lastDayClosed'));
     return Math.floor(timeSinceClosed / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
 
   daysSinceVisit: computed(function() {
-    const timeSinceVisited = new Date() - Date.parse(this.getItem('lastDayVisited'));
+    const timeSinceVisited = new Date() - Date.parse(getItem('lastDayVisited'));
     return Math.floor(timeSinceVisited / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
 
