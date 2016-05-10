@@ -116,6 +116,25 @@ test('it renders config parameters', function(assert) {
   assert.equal(smartBanner.find('.ember-smart-banner--icon').attr('style'), 'background-image: url(http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png)');
 });
 
+test('it renders banner defaults if no config parameters', function(assert) {
+  this.set('showBanner', true);
+  this.set('config', undefined);
+  this.set('iOS', null);
+
+  this.render(hbs`{{smart-banner
+    showBanner=showBanner
+    config=config
+    iOS=iOS
+  }}`);
+
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--title').text(), 'App Name', 'The title is set correctly.');
+  assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'Company Name, Inc.', 'The description is set correctly.');
+  assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'View', 'The link text is set correctly.');
+  assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com');
+  assert.equal(smartBanner.find('.ember-smart-banner--icon').attr('style'), 'background-image: url(http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png)');
+});
+
 test('is can set title through template', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);

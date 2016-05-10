@@ -25,12 +25,12 @@ export default Ember.Component.extend({
     return getOwner(this).resolveRegistration('config:environment').emberSmartBanner;
   }),
 
-  title: computed.or('titleIOS', 'titleAndroid', 'config.title'),
+  title: computed.or('titleIOS', 'titleAndroid', 'config.title', 'bannerDefaults.title'),
   description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description', 'bannerDefaults.description'),
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText', 'bannerDefaults.linkText'),
-  iconUrl: computed.reads('config.iconUrl'),
+  iconUrl: computed.or('config.iconUrl', 'bannerDefaults.iconUrl'),
   showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
-  link: computed.or('appStoreLink', 'marketLink', 'config.link'),
+  link: computed.or('appStoreLink', 'marketLink', 'config.link', 'bannerDefaults.link'),
 
   userAgent: computed(function() {
     return (navigator.userAgent || navigator.vendor || window.opera);
@@ -79,11 +79,14 @@ export default Ember.Component.extend({
   bannerDefaults: {
     appStoreLinkBase: 'https://itunes.apple.com',
     appStoreLanguage: 'en',
-    addIdIOS: '123',
+    appIdIOS: '123',
     marketLinkBase: 'market://details?id=',
     appIdAndroid: '123',
+    title: 'App Name',
     description: 'Company Name, Inc.',
-    linkText: 'View'
+    linkText: 'View',
+    link: 'https://itunes.apple.com',
+    iconUrl: 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png'
   },
 
   bannerClosed: false,
@@ -114,7 +117,7 @@ export default Ember.Component.extend({
 
   afterCloseBool: computed('daysSinceClose', 'reminderAfterClose', function() {
     const reminder = this.get('reminderAfterClose');
-    if (typeof reminder  === 'undefined' || reminder === true) {
+    if (typeof reminder  === 'undefined' || reminder === null || reminder === true) {
       return true;
     }
 
@@ -127,7 +130,7 @@ export default Ember.Component.extend({
 
   afterVisitBool: computed('daysSinceVisit', 'reminderAfterVisit', function() {
     const reminder = this.get('reminderAfterVisit');
-    if (typeof reminder  === 'undefined' || reminder === true) {
+    if (typeof reminder  === 'undefined' || reminder === null || reminder === true) {
       return true;
     }
 
