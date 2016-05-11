@@ -57,9 +57,9 @@ Set title, description, link test, and url for icon through template
     }}
 ----
 ## Features
-* Shows iOS 7 banner design
-* Detects iOS or Android platform and provides appropriate link
-* Only shown when using Mobile Safari since that's the only browser with home screen integration.
+* iOS 7 or later banner design
+* Detects iOS or Android platform and links to appropriate store
+* Automatically determines whether the app is supported on the user’s device (iOS or Android). If the device loading the banner does not support your app, or if your app is not available in the user's location, the banner will not display.
 * Set number of days before the banner is shown again after it's closed and/or after the visitor clicks "View" button
 * Option to set number of days before the banner is shown again to 'false' to never show banner again after the visitor clicks "View" button
 * Flexible configuration allows you to always show banner regardless of operating system
@@ -89,3 +89,4 @@ Set title, description, link test, and url for icon through template
 * Refactor tests to use utils
 * Mozilla local-forage implementation
 * Windows support
+* If the app is already installed on a user's device, the banner intelligently changes its action, and tapping the banner will simply open the app.
