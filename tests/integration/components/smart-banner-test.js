@@ -245,7 +245,7 @@ test('should successfully record click of link', function(assert) {
   assert.ok(localStorage.getItem('ember-smart-banner.lastDayVisited'), 'click of link is stored correctly');
 });
 
-test('banner should be open if number of days since the banner was closed is equal to the set postpone', function(assert) {
+test('banner should be open if number of days since the banner was closed is equal to the set postponement', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -269,7 +269,7 @@ test('banner should be open if number of days since the banner was closed is equ
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
 
-test('banner should be open if number of days since the banner was closed is greater than the set postpone', function(assert) {
+test('banner should be open if number of days since the banner was closed is greater than the set postponement', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -293,7 +293,7 @@ test('banner should be open if number of days since the banner was closed is gre
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
 
-test('banner should be closed if number of days since the banner was closed is less than set postpone', function(assert) {
+test('banner should be closed if number of days since the banner was closed is less than set postponement', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
