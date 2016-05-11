@@ -80,10 +80,6 @@ Set title, description, link test, and url for icon through template
     ```showAfterVisit=false  // never show again after clicking visit```
 
 ----
-
-* Thorough integration tests
-
-----
 ##Roadmap
 * Automatic icon detection
 * Refactor tests to use utils
