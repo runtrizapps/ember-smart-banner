@@ -108,37 +108,37 @@ export default Ember.Component.extend({
   // Number of days after close to wait to show banner again
   // Set to true if always show banner after clicking the close button
   // Set false if the banner never shows again after clicking close
-  reminderAfterClose: computed.reads('config.reminderAfterClose'),
+  postponeAfterClose: computed.reads('config.postponeAfterClose'),
 
   // Number of days after visit to wait to show banner again
   // Set to true if always show banner after clicking the visit button
   // Set false if the banner never shows again after clicking visit
-  reminderAfterVisit: computed.reads('config.reminderAfterVisit'),
+  postponeAfterVisit: computed.reads('config.postponeAfterVisit'),
 
-  afterCloseBool: computed('daysSinceClose', 'reminderAfterClose', function() {
-    const reminder = this.get('reminderAfterClose');
-    if (typeof reminder  === 'undefined' || reminder === null || reminder === true) {
+  afterCloseBool: computed('daysSinceClose', 'postponeAfterClose', function() {
+    const postpone = this.get('postponeAfterClose');
+    if (typeof postpone  === 'undefined' || postpone === null || postpone === true) {
       return true;
     }
 
-    if (!reminder && getDayClosed()) {
+    if (!postpone && getDayClosed()) {
       return false;
     }
 
-    return this.gteDependentKeys('daysSinceClose', 'reminderAfterClose');
+    return this.gteDependentKeys('daysSinceClose', 'postponeAfterClose');
   }),
 
-  afterVisitBool: computed('daysSinceVisit', 'reminderAfterVisit', function() {
-    const reminder = this.get('reminderAfterVisit');
-    if (typeof reminder  === 'undefined' || reminder === null || reminder === true) {
+  afterVisitBool: computed('daysSinceVisit', 'postponeAfterVisit', function() {
+    const postpone = this.get('postponeAfterVisit');
+    if (typeof postpone  === 'undefined' || postpone === null || postpone === true) {
       return true;
     }
 
-    if (!reminder  && getDayVisited()) {
+    if (!postpone  && getDayVisited()) {
       return false;
     }
 
-    return this.gteDependentKeys('daysSinceVisit', 'reminderAfterVisit');
+    return this.gteDependentKeys('daysSinceVisit', 'postponeAfterVisit');
   }),
 
   gteDependentKeys(firstKey, secondKey) {
