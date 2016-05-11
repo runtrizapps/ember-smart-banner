@@ -375,32 +375,132 @@ test('banner should be closed in complex scenario', function(assert) {
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
 });
 
-//TODO create test to assert wether reminderAfterVisit is overwritten by reminderAfterClose
+test('set afterCloseReminder to true will make the banner default to open', function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('android', false);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
+  this.set('reminderAfterClose', '30');
+  this.set('reminderAfterVisit', '30');
+  localStorage.clear();
+  var dateOffset = (24 * 60 * 60 * 1000) * 35; // 35 days
+  var newDate = new Date(); // today
+  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 35 days prior to today
+  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  dateOffset = (24 * 60 * 60 * 1000) * 25; // 25 days
+  newDate = new Date(); // today
+  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 25 days prior to today
+  localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
+  this.render(hbs `{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+    reminderAfterClose=reminderAfterClose
+    reminderAfterVisit=reminderAfterVisit
+  }}`);
 
-// test('banner should be open with reminderAfterVisit set to true', function(assert) {
-//   this.set('iOS', true);
-//   this.set('appIdIOS', 123);
-//   this.set('android', false);
-//   this.set('appIdAndroid', null);
-//   this.set('appStoreLanguage', 'en');
-//   localStorage.clear();
-//   var dateOffset = (24 * 60 * 60 * 1000) * 35; // 35 days
-//   var newDate = new Date(); // today
-//   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 35 days prior to today
-//   localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
-//   dateOffset = (24 * 60 * 60 * 1000) * 25; // 25 days
-//   newDate = new Date(); // today
-//   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 25 days prior to today
-//   localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
-//   this.render(hbs `{{smart-banner
-//     iOS=iOS
-//     appIdIOS=appIdIOS
-//     android=android
-//     appIdAndroid=appIdAndroid
-//     appStoreLanguage=appStoreLanguage
-//     reminderAfterVisit=true
-//   }}`);
-//
-//   let smartBanner = this.$();
-//   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
-// });
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
+  this.set('reminderAfterClose', true);
+  // Assert that banner will be open unless the duration of the reminderAfterVisit is greater than the daysSinceClose
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is still closed');
+  this.set('reminderAfterVisit', 25);
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
+});
+
+test('set afterVisitReminder to true will make the banner default to open', function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('android', false);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
+  this.set('reminderAfterClose', '30');
+  this.set('reminderAfterVisit', '30');
+  localStorage.clear();
+  var dateOffset = (24 * 60 * 60 * 1000) * 35; // 35 days
+  var newDate = new Date(); // today
+  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 35 days prior to today
+  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  dateOffset = (24 * 60 * 60 * 1000) * 25; // 25 days
+  newDate = new Date(); // today
+  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 25 days prior to today
+  localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
+  this.render(hbs `{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+    reminderAfterClose=reminderAfterClose
+    reminderAfterVisit=reminderAfterVisit
+  }}`);
+
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
+  this.set('reminderAfterVisit', true);
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
+});
+
+test('set afterCloseReminder to false will make the banner default to close', function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('android', false);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
+  this.set('reminderAfterClose', '30');
+  this.set('reminderAfterVisit', '30');
+  localStorage.clear();
+  var dateOffset = (24 * 60 * 60 * 1000) * 35; // 35 days
+  var newDate = new Date(); // today
+  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 35 days prior to today
+  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
+  this.render(hbs `{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+    reminderAfterClose=reminderAfterClose
+    reminderAfterVisit=reminderAfterVisit
+  }}`);
+
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
+  this.set('reminderAfterClose', false);
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
+
+});
+
+test('set afterVisitReminder to false will make the banner default to close', function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('android', false);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
+  this.set('reminderAfterClose', '30');
+  this.set('reminderAfterVisit', '30');
+  localStorage.clear();
+  var dateOffset = (24 * 60 * 60 * 1000) * 35; // 35 days
+  var newDate = new Date(); // today
+  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 35 days prior to today
+  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
+  this.render(hbs `{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+    reminderAfterClose=reminderAfterClose
+    reminderAfterVisit=reminderAfterVisit
+  }}`);
+
+  let smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
+  this.set('reminderAfterVisit', false);
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
+});
