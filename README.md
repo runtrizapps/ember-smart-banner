@@ -69,12 +69,12 @@ Set title, description, link test, and url for icon through template
 * Render defaults if no parameters are set
 * Set duration to postpone showing the banner again after it's closed and/or after the visitor clicks "View" button
 
-    ```
+
     showAfterClose=3 // show 3 days after banner it closed
     showAfterVisit=30 // show 30 days after clicking visit link
 * Set banner to default to open or default to close next time the user starts the application
 
-    ```
+
     showAfterClose=true // never show again after clicking visit
     showAfterVisit=true // never show again after clicking visit
     showAfterClose=false // never show again after clicking visit
