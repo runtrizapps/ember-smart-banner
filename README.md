@@ -90,3 +90,4 @@ Set title, description, link test, and url for icon through template
 * Mozilla local-forage implementation
 * Windows support
 * If the app is already installed on a user's device, the banner intelligently changes its action, and tapping the banner will simply open the app.
+* Provide navigational context to native app
