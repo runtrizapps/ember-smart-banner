@@ -52,8 +52,8 @@ Set title, description, link test, and url for icon through template
         appIdIOS=12335
         appIdAndroid=56789
         appStoreLanguage=fr // set to french ISO 639-1 code
-        postponeAfterClose=30 // show close button 30 days after
-        postponeAfterVisit=false // never show again after click
+        openAfterClose=30 // show close button 30 days after
+        openAfterVisit=false // never show again after click
     }}
 ----
 ## Features

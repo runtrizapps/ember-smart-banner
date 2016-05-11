@@ -119,37 +119,37 @@ export default Ember.Component.extend({
   // Number of days after close to wait to show banner again
   // Set to true if always show banner after clicking the close button
   // Set false if the banner never shows again after clicking close
-  postponeAfterClose: computed.reads('config.postponeAfterClose'),
+  openAfterClose: computed.reads('config.openAfterClose'),
 
   // Number of days after visit to wait to show banner again
   // Set to true if always show banner after clicking the visit button
   // Set false if the banner never shows again after clicking visit
-  postponeAfterVisit: computed.reads('config.postponeAfterVisit'),
+  openAfterVisit: computed.reads('config.openAfterVisit'),
 
-  afterCloseBool: computed('daysSinceClose', 'postponeAfterClose', function() {
-    const postpone = this.get('postponeAfterClose');
-    if (typeof postpone  === 'undefined' || postpone === null || postpone === true) {
+  afterCloseBool: computed('daysSinceClose', 'openAfterClose', function() {
+    const open = this.get('openAfterClose');
+    if (typeof open  === 'undefined' || open === null || open === true) {
       return true;
     }
 
-    if (!postpone && getDayClosed()) {
+    if (!open && getDayClosed()) {
       return false;
     }
 
-    return this.gteDependentKeys('daysSinceClose', 'postponeAfterClose');
+    return this.gteDependentKeys('daysSinceClose', 'openAfterClose');
   }),
 
-  afterVisitBool: computed('daysSinceVisit', 'postponeAfterVisit', function() {
-    const postpone = this.get('postponeAfterVisit');
-    if (typeof postpone  === 'undefined' || postpone === null || postpone === true) {
+  afterVisitBool: computed('daysSinceVisit', 'openAfterVisit', function() {
+    const open = this.get('openAfterVisit');
+    if (typeof open  === 'undefined' || open === null || open === true) {
       return true;
     }
 
-    if (!postpone  && getDayVisited()) {
+    if (!open  && getDayVisited()) {
       return false;
     }
 
-    return this.gteDependentKeys('daysSinceVisit', 'postponeAfterVisit');
+    return this.gteDependentKeys('daysSinceVisit', 'openAfterVisit');
   }),
 
   gteDependentKeys(firstKey, secondKey) {
