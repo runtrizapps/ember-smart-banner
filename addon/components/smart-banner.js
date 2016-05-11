@@ -33,11 +33,14 @@ export default Ember.Component.extend({
     if (configIconUrl) {
       return Ember.String.htmlSafe(configIconUrl);
     }
+
     const defaultIconUrl  = this.get('bannerDefaults.iconUrl');
     if (defaultIconUrl) {
       return Ember.String.htmlSafe(defaultIconUrl);
     }
+
   }),
+
   showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
   link: computed.or('appStoreLink', 'marketLink', 'config.link', 'bannerDefaults.link'),
 
@@ -112,7 +115,6 @@ export default Ember.Component.extend({
       setDayClosed();
     }
   },
-
 
   // Number of days after close to wait to show banner again
   // Set to true if always show banner after clicking the close button

@@ -21,7 +21,7 @@ test('it renders on iOS when an appId is set', function(assert) {
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/id123');
 });
 
@@ -40,7 +40,7 @@ test('it does not render on iOS unless an appId is set', function(assert) {
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
@@ -59,7 +59,7 @@ test('it does not render on iOS unless iOS platform detected', function(assert) 
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
@@ -78,7 +78,7 @@ test('it renders on Android when an appId is set', function(assert) {
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'market://details?id=123', 'it renders with android link');
 });
 
@@ -97,7 +97,7 @@ test('it does not render on Android unless an appId is set', function(assert) {
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
@@ -108,7 +108,7 @@ test('it renders config parameters', function(assert) {
     iOS=iOS
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--title').text(), 'App Title', 'The title is set correctly.');
   assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'Description', 'The description is set correctly.');
   assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'View', 'The link text is set correctly.');
@@ -127,7 +127,7 @@ test('it renders banner defaults if no config parameters', function(assert) {
     iOS=iOS
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--title').text(), 'App Name', 'The title is set correctly.');
   assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'Company Name, Inc.', 'The description is set correctly.');
   assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'View', 'The link text is set correctly.');
@@ -147,7 +147,7 @@ test('is can set title through template', function(assert) {
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--title').text(), 'TEST Title', 'The title is set correctly.');
 });
 
@@ -163,7 +163,7 @@ test('is can set description through template', function(assert) {
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'TEST Description', 'The description is set correctly.');
 });
 
@@ -179,7 +179,7 @@ test('is can set linkText through template', function(assert) {
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'TEST Link', 'The link text is set correctly.');
 });
 
@@ -195,7 +195,7 @@ test('is can set iconUrl through template', function(assert) {
     appStoreLanguage=appStoreLanguage
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--icon').attr('style'), 'background-image: url(https://www.example.com/)');
 });
 
@@ -217,7 +217,7 @@ test('should successfully record click of close button ', function(assert) {
   }}`);
 
   // Click close button and assert that lastDayClosed is stored;
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   smartBanner.find('.ember-smart-banner--close-button').click();
   assert.ok(localStorage.getItem('ember-smart-banner.lastDayClosed'), 'click of close button is stored correctly');
 });
@@ -240,7 +240,7 @@ test('should successfully record click of link', function(assert) {
   }}`);
 
   // Click close button and assert that lastDayClosed is stored;
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   smartBanner.find('.ember-smart-banner--view-button').click();
   assert.ok(localStorage.getItem('ember-smart-banner.lastDayVisited'), 'click of link is stored correctly');
 });
@@ -265,7 +265,7 @@ test('banner should be open if number of days since the banner was closed is equ
     appStoreLanguage=appStoreLanguage
     postponeAfterClose=30
   }}`);
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
 
@@ -289,7 +289,7 @@ test('banner should be open if number of days since the banner was closed is gre
     postponeAfterClose=30
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
 
@@ -313,7 +313,7 @@ test('banner should be closed if number of days since the banner was closed is l
     postponeAfterClose=30
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
 });
 
@@ -342,7 +342,7 @@ test('banner should be open in complex scenario', function(assert) {
     postponeAfterVisit=30
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
 
@@ -371,11 +371,11 @@ test('banner should be closed in complex scenario', function(assert) {
     postponeAfterVisit=30
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
 });
 
-test('set afterClosepostpone to true will make the banner default to open', function(assert) {
+test('set postponeafterClose to true will make the banner default to open', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -402,7 +402,7 @@ test('set afterClosepostpone to true will make the banner default to open', func
     postponeAfterVisit=postponeAfterVisit
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
   this.set('postponeAfterClose', true);
   // Assert that banner will be open unless the duration of the postponeAfterVisit is greater than the daysSinceClose
@@ -411,7 +411,7 @@ test('set afterClosepostpone to true will make the banner default to open', func
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
 
-test('set afterVisitpostpone to true will make the banner default to open', function(assert) {
+test('set postponeafterVisit to true will make the banner default to open', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -438,13 +438,13 @@ test('set afterVisitpostpone to true will make the banner default to open', func
     postponeAfterVisit=postponeAfterVisit
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
   this.set('postponeAfterVisit', true);
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
 });
 
-test('set afterClosepostpone to false will make the banner default to close', function(assert) {
+test('set postponeafterClose to false will make the banner default to close', function(assert) {
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -468,7 +468,7 @@ test('set afterClosepostpone to false will make the banner default to close', fu
     postponeAfterVisit=postponeAfterVisit
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
   this.set('postponeAfterClose', false);
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
@@ -499,7 +499,7 @@ test('set afterVisitpostpone to false will make the banner default to close', fu
     postponeAfterVisit=postponeAfterVisit
   }}`);
 
-  let smartBanner = this.$();
+  const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
   this.set('postponeAfterVisit', false);
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
