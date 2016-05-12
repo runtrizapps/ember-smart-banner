@@ -76,8 +76,8 @@ Set title, description, link test, and url for icon through template
 * Set banner to default to open or default to close next time the user starts the application
 
 
-        showAfterClose=true // never show again after clicking visit
-        showAfterVisit=true // never show again after clicking visit
+        showAfterClose=true // show banner again after clicking visit
+        showAfterVisit=true // show banner again after clicking visit
         showAfterClose=false // never show again after clicking visit
         showAfterVisit=false  // never show again after clicking visit
 
