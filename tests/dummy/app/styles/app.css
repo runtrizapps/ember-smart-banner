@@ -1,0 +1,7 @@
+.smart-banner-demo .ember-smart-banner--inner {
+  position: absolute;
+}
+
+.marvel-device:after {
+  pointer-events: none;
+}

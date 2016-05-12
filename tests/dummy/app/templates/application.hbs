@@ -1,5 +1,18 @@
-<h1 class='test'>Header</h1>
-<p>Lorem ipsum...</p>
+<h1 class='test'>Ember Smart Banner</h1>
 
-{{smart-banner}}
-{{outlet}}
+<div class="marvel-device iphone6plus black">
+   <div class="top-bar"></div>
+   <div class="sleep"></div>
+   <div class="volume"></div>
+   <div class="camera"></div>
+   <div class="sensor"></div>
+   <div class="speaker"></div>
+   <div class="smart-banner-demo screen">
+      {{smart-banner
+        iOS=true
+        appIdIOS=123
+      }}
+   </div>
+   <div class="home"></div>
+   <div class="bottom-bar"></div>
+</div>
