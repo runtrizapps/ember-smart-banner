@@ -1,5 +1,5 @@
 
-.ember-smart-banner {
+.ember-smart-banner--inner {
   position: fixed;
   left: 0;
   top: 0;
@@ -16,7 +16,7 @@
   overflow: hidden;
 }
 .ember-smart-banner--close-button {
-  position: fixed;
+  position: absolute;
   left: 0.6em;
   top: 0.6em;
   display: block;
@@ -36,7 +36,7 @@
   -webkit-font-smoothing: subpixel-antialiased;
 }
 .ember-smart-banner--icon {
-  position: fixed;
+  position: absolute;
   left: 1.9em;
   top: 0.65em;
   display: block;
@@ -48,7 +48,7 @@
   box-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.3);
 }
 .ember-smart-banner--info {
-  position: fixed;
+  position: absolute;
   left: 8.95em;
   top: 2.2em;
   width: 44%;
@@ -64,7 +64,7 @@
   color: #4d4d4d;
 }
 .ember-smart-banner--view-button {
-  position: fixed;
+  position: absolute;
   right: 1.4em;
   top: 1.7em;
   border: 0.1em solid #bfbfbf;
