@@ -40,6 +40,9 @@
   background-size: cover;
   border-radius: 0.65em;
 }
+.ember-smart-banner--icon img {
+    width: 100%;
+}
 .ember-smart-banner--info {
   position: absolute;
   left: 8.95em;
