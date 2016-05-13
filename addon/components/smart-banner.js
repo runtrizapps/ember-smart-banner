@@ -28,19 +28,7 @@ export default Ember.Component.extend({
   title: computed.or('titleIOS', 'titleAndroid', 'config.title', 'bannerDefaults.title'),
   description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description', 'bannerDefaults.description'),
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText', 'bannerDefaults.linkText'),
-  iconUrl: computed('config.iconUrl', 'bannerDefaults.iconUrl', function() {
-    const configIconUrl = this.get('config.iconUrl');
-    if (configIconUrl) {
-      return Ember.String.htmlSafe(configIconUrl);
-    }
-
-    const defaultIconUrl  = this.get('bannerDefaults.iconUrl');
-    if (defaultIconUrl) {
-      return Ember.String.htmlSafe(defaultIconUrl);
-    }
-
-  }),
-
+  iconUrl: computed.or('config.iconUrl', 'bannerDefaults.iconUrl'),
   showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
   link: computed.or('appStoreLink', 'marketLink', 'config.link', 'bannerDefaults.link'),
 
