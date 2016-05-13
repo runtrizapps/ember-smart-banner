@@ -504,3 +504,24 @@ test('set afterVisitopen to false will make the banner default to close', functi
   this.set('openAfterVisit', false);
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
 });
+
+test('banner should render the first time, regardless of openAfter durations', function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('android', false);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
+  localStorage.clear();
+
+  this.render(hbs `{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+    openAfterClose=30
+    openAfterVisit=30
+  }}`);
+  const smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
+});
