@@ -110,7 +110,8 @@ export default Ember.Component.extend({
       setDayVisited();
     },
 
-    closeBanner: function() {
+    closeBanner: function(e) {
+      e.preventDefault();
       this.set('bannerClosed', true);
       setDayClosed();
     }
