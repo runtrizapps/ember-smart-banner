@@ -113,7 +113,7 @@ test('it renders config parameters', function(assert) {
   assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'Description', 'The description is set correctly.');
   assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'View', 'The link text is set correctly.');
   assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/id123');
-  assert.equal(smartBanner.find('.ember-smart-banner--icon').attr('style'), 'background-image: url(http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png)');
+  assert.equal(smartBanner.find('img').attr('src'), 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png');
 });
 
 test('it renders banner defaults if no config parameters', function(assert) {
@@ -132,7 +132,7 @@ test('it renders banner defaults if no config parameters', function(assert) {
   assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'Company Name, Inc.', 'The description is set correctly.');
   assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'View', 'The link text is set correctly.');
   assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com');
-  assert.equal(smartBanner.find('.ember-smart-banner--icon').attr('style'), 'background-image: url(http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png)');
+  assert.equal(smartBanner.find('img').attr('src'), 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png');
 });
 
 test('is can set title through template', function(assert) {
@@ -196,7 +196,7 @@ test('is can set iconUrl through template', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--icon').attr('style'), 'background-image: url(https://www.example.com/)');
+  assert.equal(smartBanner.find('img').attr('src'), 'https://www.example.com/');
 });
 
 test('should successfully record click of close button ', function(assert) {
