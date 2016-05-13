@@ -57,12 +57,8 @@ export default Ember.Component.extend({
   appIdIOS: computed.or('config.appIdIOS', 'bannerDefaults.appIdIOS'),
   appStoreLink: computed(function() {
     return (
-      this.get('iOS') && (
-        this.get('config.appStoreLink') || (
-          `${this.get('bannerDefaults.appStoreLinkBase')}/${this.get('appStoreLanguage')}` +
-            `/app/id${this.get('appIdIOS')}`
-        )
-      )
+      `${this.get('bannerDefaults.appStoreLinkBase')}/${this.get('appStoreLanguage')}` +
+        `/app/id${this.get('appIdIOS')}`
     );
   }),
 
@@ -71,9 +67,7 @@ export default Ember.Component.extend({
   linkTextAndroid: computed.and('android', 'config.linkTextAndroid'),
   appIdAndroid: computed.or('config.appIdAndroid', 'bannerDefaults.appIdAndroid'),
   marketLink: computed(function() {
-    return (this.get('android') && (
-      this.get('config.marketLink') || 'market://details?id=' + this.get('appIdAndroid'))
-    );
+    return 'market://details?id=' + this.get('appIdAndroid');
   }),
 
   bannerDefaults: {
