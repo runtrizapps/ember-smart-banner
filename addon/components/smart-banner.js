@@ -81,7 +81,7 @@ export default Ember.Component.extend({
   titleAndroid: computed.and('android', 'config.titleAndroid'),
   descriptionAndroid: computed.and('android', 'config.descriptionAndroid'),
   linkTextAndroid: computed.and('android', 'config.linkTextAndroid'),
-  appIdAndroid: computed.reads('reads.appIdAndroid'),
+  appIdAndroid: computed.or('config.appIdAndroid', 'bannerDefaults.appIdAndroid'),
   marketLink: computed(function() {
     return (this.get('android') && (
       this.get('config.marketLink') || 'market://details?id=' + this.get('appIdAndroid'))
