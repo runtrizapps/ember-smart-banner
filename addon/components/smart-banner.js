@@ -1,53 +1,170 @@
+/* global window, navigator */
+
+import Ember from 'ember';
+import layout from '../templates/components/smart-banner';
+import getOwner from 'ember-getowner-polyfill';
+import bannerStorage from '../utils/banner-storage';
+
+const {
+  computed,
+} = Ember;
+
+const {
+  getDayClosed,
+  getDayVisited,
+  setDayClosed,
+  setDayVisited,
+} = bannerStorage;
+
 export default Ember.Component.extend({
+  layout,
+
+  classNames: ['ember-smart-banner'],
   // http://discuss.emberjs.com/t/best-practices-accessing-app-config-from-addon-code/7006/16
-  config: Ember.computed(function() {
-    return Ember.getOwner(this).resolveRegistration('config:environment').emberSmartBanner;
+  config: computed(function() {
+    return getOwner(this).resolveRegistration('config:environment').emberSmartBanner;
   }),
-  title: Ember.computed.or('titleIOS','titleAndroid','config.title'),
-  description: Ember.computed.alias('descriptionIOS', 'descriptionAndroid', 'config.description'),
-  buttonText: Ember.computed.alias('buttonTextIOS', 'buttonTextAndroid', 'config.buttonText'),
-  imgUrl: Ember.computed.alias('config.imgUrl'),
-  showBanner: Ember.computed.or('config.showBanner', 'showBannerDefault'),
-  link: "",
-  showBannerDefault: true,
-  mobileOperatingSystem: Ember.computed(function() {
-    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    if (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i)) {
-      return 'iOS';
-    } else if (userAgent.match(/Android/i)) {
-      return 'Android';
-    } else {
-      return 'unknown';
+
+  title: computed.or('titleIOS', 'titleAndroid', 'config.title', 'bannerDefaults.title'),
+  description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description', 'bannerDefaults.description'),
+  linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText', 'bannerDefaults.linkText'),
+  iconUrl: computed('config.iconUrl', 'bannerDefaults.iconUrl', function() {
+    const configIconUrl = this.get('config.iconUrl');
+    if (configIconUrl) {
+      return Ember.String.htmlSafe(configIconUrl);
     }
+
+    const defaultIconUrl  = this.get('bannerDefaults.iconUrl');
+    if (defaultIconUrl) {
+      return Ember.String.htmlSafe(defaultIconUrl);
+    }
+
   }),
-  iOS: Ember.computed.equal('mobileOperatingSystem', 'iOS'),
-  android: Ember.computed.equal('mobileOperatingSystem', 'iOS'),
-  titleIOS: Ember.computed(function() {
-    return (this.get('iOS') && this.get('config.titleIOS'));
+
+  showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
+  link: computed.or('appStoreLink', 'marketLink', 'config.link', 'bannerDefaults.link'),
+
+  userAgent: computed(function() {
+    return (navigator.userAgent || navigator.vendor || window.opera);
   }),
-  titleAndroid: Ember.computed(function() {
-    return (this.get('android') && this.get('config.titleAndroid'));
+
+  supportsOS: computed.or('supportsIOS', 'supportAndroid'),
+  supportsIOS: computed.and('iOS', 'appIdIOS'),
+  supportAndroid: computed.and('android', 'appIdAndroid'),
+
+  iOS: computed('userAgent', function() {
+    const userAgent = this.get('userAgent');
+    return (userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i));
   }),
-  descriptionIOS: Ember.computed(function() {
-    return (this.get('iOS') && this.get('config.descriptionIOS'));
+
+  android: computed('userAgent', function() {
+    const userAgent = this.get('userAgent');
+    return (userAgent.match(/Android/i));
   }),
-  descriptionAndroid: Ember.computed(function() {
-    return (this.get('android') && this.get('config.descriptionAndroid'));
+
+  titleIOS: computed.and('iOS', 'config.titleIOS'),
+  descriptionIOS: computed.and('iOS', 'config.descriptionIOS'),
+  linkTextIOS: computed.and('iOS', 'config.linkTextIOS'),
+  appStoreLanguage: computed.or('config.appStoreLanguage', 'bannerDefaults.appStoreLanguage'),
+  appIdIOS: computed.or('config.appIdIOS', 'bannerDefaults.appIdIOS'),
+  appStoreLink: computed(function() {
+    return (
+      this.get('iOS') && (
+        this.get('config.appStoreLink') || (
+          `${this.get('bannerDefaults.appStoreLinkBase')}/${this.get('appStoreLanguage')}` +
+            `/app/id${this.get('appIdIOS')}`
+        )
+      )
+    );
   }),
-  buttonTextIOS: Ember.computed(function() {
-    return (this.get('iOS') && this.get('config.buttonTextIOS'));
+
+  titleAndroid: computed.and('android', 'config.titleAndroid'),
+  descriptionAndroid: computed.and('android', 'config.descriptionAndroid'),
+  linkTextAndroid: computed.and('android', 'config.linkTextAndroid'),
+  appIdAndroid: computed.reads('reads.appIdAndroid'),
+  marketLink: computed(function() {
+    return (this.get('android') && (
+      this.get('config.marketLink') || 'market://details?id=' + this.get('appIdAndroid'))
+    );
   }),
-  buttonTextAndroid: Ember.computed(function() {
-    return (this.get('android') && this.get('config.buttonTextAndroid'));
+
+  bannerDefaults: {
+    appStoreLinkBase: 'https://itunes.apple.com',
+    appStoreLanguage: 'en',
+    appIdIOS: '123',
+    marketLinkBase: 'market://details?id=',
+    appIdAndroid: '123',
+    title: 'App Name',
+    description: 'Company Name, Inc.',
+    linkText: 'View',
+    link: 'https://itunes.apple.com',
+    iconUrl: 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png'
+  },
+
+  bannerClosed: false,
+  bannerOpen: computed.not('bannerClosed'),
+
+  actions: {
+    openLink: function() {
+      this.set('bannerClosed', true);
+      setDayVisited();
+    },
+
+    closeBanner: function() {
+      this.set('bannerClosed', true);
+      setDayClosed();
+    }
+  },
+
+  // Number of days after close to wait to show banner again
+  // Set to true if always show banner after clicking the close button
+  // Set false if the banner never shows again after clicking close
+  openAfterClose: computed.reads('config.openAfterClose'),
+
+  // Number of days after visit to wait to show banner again
+  // Set to true if always show banner after clicking the visit button
+  // Set false if the banner never shows again after clicking visit
+  openAfterVisit: computed.reads('config.openAfterVisit'),
+
+  afterCloseBool: computed('daysSinceClose', 'openAfterClose', function() {
+    const open = this.get('openAfterClose');
+    if (typeof open  === 'undefined' || open === null || open === true) {
+      return true;
+    }
+
+    if (!open && getDayClosed()) {
+      return false;
+    }
+
+    return this.gteDependentKeys('daysSinceClose', 'openAfterClose');
   }),
-  appStoreLink: Ember.computed(function() {
-    return (this.get('iOS') && (this.get('config.appStoreLink') || 'https://itunes.apple.com/us/app/' + this.get('iosAppId'))); // TODO configure appStoreLanguage
+
+  afterVisitBool: computed('daysSinceVisit', 'openAfterVisit', function() {
+    const open = this.get('openAfterVisit');
+    if (typeof open  === 'undefined' || open === null || open === true) {
+      return true;
+    }
+
+    if (!open  && getDayVisited()) {
+      return false;
+    }
+
+    return this.gteDependentKeys('daysSinceVisit', 'openAfterVisit');
   }),
-  marketLink: Ember.computed(function() {
-    return (this.get('iOS') && (this.get('config.marketLink') || 'market://details?id=' + this.get('androidAppId')));
+
+  gteDependentKeys(firstKey, secondKey) {
+    return (this.get(firstKey) >= this.get(secondKey));
+  },
+
+  daysSinceClose: computed(function() {
+    const timeSinceClosed = new Date() - Date.parse(getDayClosed());
+    return Math.floor(timeSinceClosed / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
-  iosAppId: Ember.computed.alias('config.iosAppId'),
-  androidAppId: Ember.computed.alias('config.iosAppId'),
+
+  daysSinceVisit: computed(function() {
+    const timeSinceVisited = new Date() - Date.parse(getDayVisited());
+    return Math.floor(timeSinceVisited / (24 * 60 * 60 * 1000)); // Convert ms to days
+  }),
 
   //https://github.com/jasny/jquery.smartbanner/blob/master/jquery.smartbanner.js
 });

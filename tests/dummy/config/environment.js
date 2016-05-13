@@ -18,10 +18,13 @@ module.exports = function(environment) {
       // when it is created
     },
 
-    emberSmartBanner: {    
+    emberSmartBanner: {
       title: 'App Title',
-      description: 'Description',
-      buttonText: 'Button Text',      
+      description: 'Description',
+      linkText: 'View',
+      appIdIOS: '123',
+      appStoreLanguage: 'en',
+      iconUrl: 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png'
     }
   };
 
