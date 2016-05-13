@@ -1,5 +1,5 @@
 
-.ember-smart-banner {
+.ember-smart-banner--inner {
   position: fixed;
   left: 0;
   top: 0;
@@ -9,77 +9,67 @@
   font-family: 'Helvetica Neue', sans-serif;
   font-size: 16px;
   text-align: left;
-  background: -webkit-linear-gradient(top, #f4f4f4 0%, #cdcdcd 100%);
+  background: #f4f4f4;
   box-shadow: 0 0.1em 0.15em rgba(0, 0, 0, 0.5);
   z-index: 9998;
   -webkit-font-smoothing: antialiased;
   overflow: hidden;
 }
 .ember-smart-banner--close-button {
-  position: fixed;
-  left: 0.6em;
-  top: 0.6em;
+  position: absolute;
+  top: 20px;
   display: block;
-  border: 0.3em solid #fff;
-  width: 1.4em;
-  height: 1.4em;
-  font-family: 'ArialRoundedMTBold', 'Helvetica Neue', sans-serif;
-  font-size: 0.6em;
+  width: 1.2em;
+  height: 1.2em;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-size: 1.5em;
   line-height: 1.4em;
   text-align: center;
-  color: #fff;
-  background: #070707;
+  color: #6f6f6f;
   text-decoration: none;
-  text-shadow: none;
-  border-radius: 1.4em;
-  box-shadow: 0 0.3em 0.4em rgba(0, 0, 0, 0.4);
   -webkit-font-smoothing: subpixel-antialiased;
 }
 .ember-smart-banner--icon {
-  position: fixed;
+  position: absolute;
   left: 1.9em;
   top: 0.65em;
   display: block;
   width: 3.6em;
   height: 3.6em;
-  background: rgba(0, 0, 0, 0.6);
+  /*background: rgba(0, 0, 0, 0.6);*/
   background-size: cover;
   border-radius: 0.65em;
-  box-shadow: 0 0.1em 0.2em rgba(0, 0, 0, 0.3);
+}
+.ember-smart-banner--icon img {
+    width: 100%;
 }
 .ember-smart-banner--info {
-  position: fixed;
+  position: absolute;
   left: 8.95em;
   top: 2.2em;
   width: 44%;
   font-size: 0.7em;
   line-height: 1.2em;
   font-weight: bold;
-  color: #6a6a6a;
-  text-shadow: 0 0.1em 0 rgba(255, 255, 255, 0.8);
+  color: #000;
 }
 .ember-smart-banner--info strong {
   display: block;
   font-size: 1.2em;
-  color: #4d4d4d;
+  color: #000;
 }
 .ember-smart-banner--view-button {
-  position: fixed;
+  position: absolute;
   right: 1.4em;
-  top: 1.7em;
-  border: 0.1em solid #bfbfbf;
+  top: 1.2em;
   width: 10%;
   min-width: 4.1em;
   height: 1.7em;
-  font-size: 0.9em;
+  font-size: 1.2em;
   line-height: 1.7em;
   text-align: center;
-  font-weight: bold;
-  color: #6a6a6a;
-  background: -webkit-linear-gradient(top, #efefef 0%, #dcdcdc 100%);
+  font-weight: 500;
+  color: #0077ff;
   text-transform: uppercase;
   text-decoration: none;
-  text-shadow: 0 0.1em 0 rgba(255, 255, 255, 0.8);
-  border-radius: 0.25em;
-  box-shadow: 0 0.1em 0 rgba(255, 255, 255, 0.6), 0 0.1em 0 rgba(255, 255, 255, 0.7) inset;
 }
