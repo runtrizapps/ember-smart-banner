@@ -128,7 +128,7 @@ export default Ember.Component.extend({
 
   afterCloseBool: computed('daysSinceClose', 'openAfterClose', function() {
     const open = this.get('openAfterClose');
-    if (typeof open  === 'undefined' || open === null || open === true) {
+    if (typeof open  === 'undefined' || open === null || open === true || open === 'true') {
       return true;
     }
 
@@ -141,7 +141,8 @@ export default Ember.Component.extend({
 
   afterVisitBool: computed('daysSinceVisit', 'openAfterVisit', function() {
     const open = this.get('openAfterVisit');
-    if (typeof open  === 'undefined' || open === null || open === true) {
+
+    if (typeof open  === 'undefined' || open === null || open === true || open === 'true') {
       return true;
     }
 
