@@ -68,18 +68,15 @@ export default Ember.Component.extend({
   linkTextAndroid: computed.and('android', 'config.linkTextAndroid'),
   appIdAndroid: computed.or('config.appIdAndroid', 'bannerDefaults.appIdAndroid'),
   marketLink: computed(function() {
-    return 'market://details?id=' + this.get('appIdAndroid');
+    return `${this.get('bannerDefaults.marketLinkBase')}${this.get('appIdAndroid')}`;
   }),
   displayMarketLink: computed.and('supportsAndroid','marketLink'),
 
   bannerDefaults: {
     appStoreLinkBase: 'https://itunes.apple.com',
     appStoreLanguage: 'en',
-    appIdIOS: '123',
     marketLinkBase: 'market://details?id=',
-    appIdAndroid: '123',
-    title: 'App Name',
-    description: 'Company Name, Inc.',
+    title: 'Download our App',
     linkText: 'View',
     iconUrl: 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png'
   },
