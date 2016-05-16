@@ -133,6 +133,8 @@ export default Ember.Component.extend({
       // if { openAfterClose: isValidNumber }
       return this.gteDependentKeys('daysSinceClose', 'openAfterClose');
     }
+
+    return true;
   }),
 
   afterVisitBool: computed('daysSinceVisit', 'openAfterVisit', function() {
@@ -149,6 +151,8 @@ export default Ember.Component.extend({
       // if { openAfterVisit: isValidNumber }
       return this.gteDependentKeys('daysSinceClose', 'openAfterClose');
     }
+
+    return true;
   }),
 
   gteDependentKeys(firstKey, secondKey) {
