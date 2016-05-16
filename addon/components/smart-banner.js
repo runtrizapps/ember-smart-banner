@@ -109,30 +109,45 @@ export default Ember.Component.extend({
   // Set false if the banner never shows again after clicking visit
   openAfterVisit: computed.reads('config.openAfterVisit'),
 
-  afterCloseBool: computed('daysSinceClose', 'openAfterClose', function() {
-    const open = this.get('openAfterClose');
-    if (typeof open  === 'undefined' || open === null || open === true) {
-      return true;
-    }
+  neverShowAfterClose: computed.equal('openAfterClose', false),
+  recentlyClosed: computed.bool('daysSinceClose'),
+  restrictAfterClose: restrictMacro('openAfterClose'),
 
-    if (!open && getDayClosed()) {
+  neverShowAfterVisit: computed.equal('openAfterVisit', false),
+  recentlyVisited: computed.bool('daysSinceVisit'),
+  restrictAfterVisit: restrictMacro('openAfterVisit'),
+
+
+  afterCloseBool: computed('daysSinceClose', 'openAfterClose', function() {
+    const wasRecentlyClosed = this.get('recentlyClosed');
+    const neverShowAfterClose = this.get('neverShowAfterClose');
+    const restrictAfterClose = this.get('restrictAfterClose');
+
+    if (neverShowAfterClose && wasRecentlyClosed) {
+      // never show if { openAfterClose: false } && has been closed
       return false;
     }
 
-    return this.gteDependentKeys('daysSinceClose', 'openAfterClose');
+    if (restrictAfterClose && wasRecentlyClosed) {
+      // if { openAfterClose: isValidNumber }
+      return this.gteDependentKeys('daysSinceClose', 'openAfterClose');
+    }
   }),
 
   afterVisitBool: computed('daysSinceVisit', 'openAfterVisit', function() {
-    const open = this.get('openAfterVisit');
-    if (typeof open  === 'undefined' || open === null || open === true) {
-      return true;
-    }
+    const wasRecentlyVisited = this.get('recentlyVisited');
+    const neverShowAfterVisit = this.get('neverShowAfterVisit');
+    const restrictAfterVisit = this.get('restrictAfterVisit');
 
-    if (!open  && getDayVisited()) {
+    if (neverShowAfterVisit && wasRecentlyVisited) {
+      // never show if { openAfterVisit: false } && has been visited
       return false;
     }
 
-    return this.gteDependentKeys('daysSinceVisit', 'openAfterVisit');
+    if (restrictAfterVisit && wasRecentlyVisited) {
+      // if { openAfterVisit: isValidNumber }
+      return this.gteDependentKeys('daysSinceClose', 'openAfterClose');
+    }
   }),
 
   gteDependentKeys(firstKey, secondKey) {
