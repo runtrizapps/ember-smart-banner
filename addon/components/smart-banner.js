@@ -151,3 +151,11 @@ export default Ember.Component.extend({
 
   //https://github.com/jasny/jquery.smartbanner/blob/master/jquery.smartbanner.js
 });
+
+function restrictMacro(delayKey) {
+  return computed(delayKey, function() {
+    const openDelay = this.get(delayKey);
+    const isValidNumber = isNaN(parseInt(openDelay, 10)) === false;
+    return isValidNumber;
+  });
+}
