@@ -149,7 +149,7 @@ export default Ember.Component.extend({
 
     if (restrictAfterVisit && wasRecentlyVisited) {
       // if { openAfterVisit: isValidNumber }
-      return this.gteDependentKeys('daysSinceClose', 'openAfterClose');
+      return this.gteDependentKeys('daysSinceVisit', 'openAfterVisit');
     }
 
     return true;
