@@ -44,6 +44,22 @@ test('it does not render on iOS unless an appId is set', function(assert) {
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
+test('it does not render on iOS by default when no appId is set', function(assert) {
+  this.set('iOS', true);
+  this.set('android', false);
+
+  this.render(hbs`{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+  }}`);
+
+  const smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+});
+
 test('it does not render on iOS unless iOS platform detected', function(assert) {
   this.set('iOS', false);
   this.set('appIdIOS', 123);
