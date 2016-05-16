@@ -30,15 +30,15 @@ export default Ember.Component.extend({
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText', 'bannerDefaults.linkText'),
   iconUrl: computed.or('config.iconUrl', 'bannerDefaults.iconUrl'),
   showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
-  link: computed.or('appStoreLink', 'marketLink', 'config.link', 'bannerDefaults.link'),
+  link: computed.or('displayAppStoreLink', 'displayMarketLink'),
 
   userAgent: computed(function() {
     return (navigator.userAgent || navigator.vendor || window.opera);
   }),
 
-  supportsOS: computed.or('supportsIOS', 'supportAndroid'),
+  supportsOS: computed.or('supportsIOS', 'supportsAndroid'),
   supportsIOS: computed.and('iOS', 'appIdIOS'),
-  supportAndroid: computed.and('android', 'appIdAndroid'),
+  supportsAndroid: computed.and('android', 'appIdAndroid'),
 
   iOS: computed('userAgent', function() {
     const userAgent = this.get('userAgent');
@@ -61,6 +61,7 @@ export default Ember.Component.extend({
         `/app/id${this.get('appIdIOS')}`
     );
   }),
+  displayAppStoreLink: computed.and('supportsIOS','appStoreLink'),
 
   titleAndroid: computed.and('android', 'config.titleAndroid'),
   descriptionAndroid: computed.and('android', 'config.descriptionAndroid'),
@@ -69,6 +70,7 @@ export default Ember.Component.extend({
   marketLink: computed(function() {
     return 'market://details?id=' + this.get('appIdAndroid');
   }),
+  displayMarketLink: computed.and('supportsAndroid','marketLink'),
 
   bannerDefaults: {
     appStoreLinkBase: 'https://itunes.apple.com',
@@ -79,7 +81,6 @@ export default Ember.Component.extend({
     title: 'App Name',
     description: 'Company Name, Inc.',
     linkText: 'View',
-    link: 'https://itunes.apple.com',
     iconUrl: 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png'
   },
 
