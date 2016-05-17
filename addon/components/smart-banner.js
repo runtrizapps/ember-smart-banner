@@ -88,12 +88,16 @@ export default Ember.Component.extend({
     openLink: function() {
       this.set('bannerClosed', true);
       setDayVisited();
+      const visitFn = Ember.getWithDefault(this, 'attrs.onvisit', Ember.K);
+      visitFn();
     },
 
     closeBanner: function(e) {
       e.preventDefault();
       this.set('bannerClosed', true);
       setDayClosed();
+      const closeFn = Ember.getWithDefault(this, 'attrs.onclose', Ember.K);
+      closeFn();
     }
   },
 
