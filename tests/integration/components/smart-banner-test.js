@@ -578,3 +578,28 @@ test('it invokes the provided callback when clicking view', function(assert) {
   smartBanner.find('.ember-smart-banner--view-button').click();
   assert.equal(functionInvoked, true, 'the provded callback was called');
 });
+
+test('closed today is not the same as never closed', function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('openAfterClose', '30');
+  this.set('openAfterVisit', '30');
+  localStorage.clear();
+  var newDate = new Date(); // today
+  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+
+  // Should not show - was just closed recently
+  this.render(hbs `{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+    openAfterClose=openAfterClose
+    openAfterVisit=openAfterVisit
+  }}`);
+
+  const smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner should not be open');
+
+});
