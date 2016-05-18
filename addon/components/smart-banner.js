@@ -112,13 +112,14 @@ export default Ember.Component.extend({
   openAfterVisit: computed.reads('config.openAfterVisit'),
 
   neverShowAfterClose: computed.equal('openAfterClose', false),
-  recentlyClosed: computed.bool('daysSinceClose'),
+  neverClosed: computedIsNaN('daysSinceClose'),
+  recentlyClosed: computed.not('neverClosed'),
   restrictAfterClose: restrictMacro('openAfterClose'),
 
   neverShowAfterVisit: computed.equal('openAfterVisit', false),
-  recentlyVisited: computed.bool('daysSinceVisit'),
+  neverVisited: computedIsNaN('daysSinceVisit'),
+  recentlyVisited: computed.not('neverVisited'),
   restrictAfterVisit: restrictMacro('openAfterVisit'),
-
 
   afterCloseBool: computed('daysSinceClose', 'openAfterClose', function() {
     const wasRecentlyClosed = this.get('recentlyClosed');
@@ -160,11 +161,13 @@ export default Ember.Component.extend({
     return (this.get(firstKey) >= this.get(secondKey));
   },
 
+  // Returns NaN if no localstorage data has been set
   daysSinceClose: computed(function() {
     const timeSinceClosed = new Date() - Date.parse(getDayClosed());
     return Math.floor(timeSinceClosed / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
 
+  // Returns NaN if no localstorage data has been set
   daysSinceVisit: computed(function() {
     const timeSinceVisited = new Date() - Date.parse(getDayVisited());
     return Math.floor(timeSinceVisited / (24 * 60 * 60 * 1000)); // Convert ms to days
@@ -172,6 +175,12 @@ export default Ember.Component.extend({
 
   //https://github.com/jasny/jquery.smartbanner/blob/master/jquery.smartbanner.js
 });
+
+function computedIsNaN(depKey) {
+  return computed(function() {
+    return isNaN(this.get(depKey));
+  });
+}
 
 function restrictMacro(delayKey) {
   return computed(delayKey, function() {
