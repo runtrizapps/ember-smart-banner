@@ -81,6 +81,16 @@ Set title, description, link test, and url for icon through template
         showAfterClose=false // never show again after clicking visit
         showAfterVisit=false  // never show again after clicking visit
 
+* Define your own callback to be invoked when clicking view button or close button
+
+        {{smart-banner
+            appIdIOS=12335
+            appIdAndroid=56789
+            onclose=(action myCallback) // callback will be invoked when use clicks close
+            onvisit=(action anotherCallback) // callback will be invoked when user clicks view
+        }}
+
+
 ----
 ##Roadmap
 * Automatic icon detection

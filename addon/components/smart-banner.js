@@ -28,29 +28,17 @@ export default Ember.Component.extend({
   title: computed.or('titleIOS', 'titleAndroid', 'config.title', 'bannerDefaults.title'),
   description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description', 'bannerDefaults.description'),
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText', 'bannerDefaults.linkText'),
-  iconUrl: computed('config.iconUrl', 'bannerDefaults.iconUrl', function() {
-    const configIconUrl = this.get('config.iconUrl');
-    if (configIconUrl) {
-      return Ember.String.htmlSafe(configIconUrl);
-    }
-
-    const defaultIconUrl  = this.get('bannerDefaults.iconUrl');
-    if (defaultIconUrl) {
-      return Ember.String.htmlSafe(defaultIconUrl);
-    }
-
-  }),
-
+  iconUrl: computed.or('config.iconUrl', 'bannerDefaults.iconUrl'),
   showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
-  link: computed.or('appStoreLink', 'marketLink', 'config.link', 'bannerDefaults.link'),
+  link: computed.or('displayAppStoreLink', 'displayMarketLink'),
 
   userAgent: computed(function() {
     return (navigator.userAgent || navigator.vendor || window.opera);
   }),
 
-  supportsOS: computed.or('supportsIOS', 'supportAndroid'),
+  supportsOS: computed.or('supportsIOS', 'supportsAndroid'),
   supportsIOS: computed.and('iOS', 'appIdIOS'),
-  supportAndroid: computed.and('android', 'appIdAndroid'),
+  supportsAndroid: computed.and('android', 'appIdAndroid'),
 
   iOS: computed('userAgent', function() {
     const userAgent = this.get('userAgent');
@@ -69,35 +57,27 @@ export default Ember.Component.extend({
   appIdIOS: computed.or('config.appIdIOS', 'bannerDefaults.appIdIOS'),
   appStoreLink: computed(function() {
     return (
-      this.get('iOS') && (
-        this.get('config.appStoreLink') || (
-          `${this.get('bannerDefaults.appStoreLinkBase')}/${this.get('appStoreLanguage')}` +
-            `/app/id${this.get('appIdIOS')}`
-        )
-      )
+      `${this.get('bannerDefaults.appStoreLinkBase')}/${this.get('appStoreLanguage')}` +
+        `/app/id${this.get('appIdIOS')}`
     );
   }),
+  displayAppStoreLink: computed.and('supportsIOS','appStoreLink'),
 
   titleAndroid: computed.and('android', 'config.titleAndroid'),
   descriptionAndroid: computed.and('android', 'config.descriptionAndroid'),
   linkTextAndroid: computed.and('android', 'config.linkTextAndroid'),
   appIdAndroid: computed.or('config.appIdAndroid', 'bannerDefaults.appIdAndroid'),
   marketLink: computed(function() {
-    return (this.get('android') && (
-      this.get('config.marketLink') || 'market://details?id=' + this.get('appIdAndroid'))
-    );
+    return `${this.get('bannerDefaults.marketLinkBase')}${this.get('appIdAndroid')}`;
   }),
+  displayMarketLink: computed.and('supportsAndroid','marketLink'),
 
   bannerDefaults: {
     appStoreLinkBase: 'https://itunes.apple.com',
     appStoreLanguage: 'en',
-    appIdIOS: '123',
     marketLinkBase: 'market://details?id=',
-    appIdAndroid: '123',
-    title: 'App Name',
-    description: 'Company Name, Inc.',
+    title: 'Download our App',
     linkText: 'View',
-    link: 'https://itunes.apple.com',
     iconUrl: 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png'
   },
 
@@ -108,12 +88,16 @@ export default Ember.Component.extend({
     openLink: function() {
       this.set('bannerClosed', true);
       setDayVisited();
+      const visitFn = Ember.getWithDefault(this, 'attrs.onvisit', Ember.K);
+      visitFn();
     },
 
     closeBanner: function(e) {
       e.preventDefault();
       this.set('bannerClosed', true);
       setDayClosed();
+      const closeFn = Ember.getWithDefault(this, 'attrs.onclose', Ember.K);
+      closeFn();
     }
   },
 
@@ -127,30 +111,49 @@ export default Ember.Component.extend({
   // Set false if the banner never shows again after clicking visit
   openAfterVisit: computed.reads('config.openAfterVisit'),
 
-  afterCloseBool: computed('daysSinceClose', 'openAfterClose', function() {
-    const open = this.get('openAfterClose');
-    if (typeof open  === 'undefined' || open === null || open === true) {
-      return true;
-    }
+  neverShowAfterClose: computed.equal('openAfterClose', false),
+  recentlyClosed: computed.bool('daysSinceClose'),
+  restrictAfterClose: restrictMacro('openAfterClose'),
 
-    if (!open && getDayClosed()) {
+  neverShowAfterVisit: computed.equal('openAfterVisit', false),
+  recentlyVisited: computed.bool('daysSinceVisit'),
+  restrictAfterVisit: restrictMacro('openAfterVisit'),
+
+
+  afterCloseBool: computed('daysSinceClose', 'openAfterClose', function() {
+    const wasRecentlyClosed = this.get('recentlyClosed');
+    const neverShowAfterClose = this.get('neverShowAfterClose');
+    const restrictAfterClose = this.get('restrictAfterClose');
+
+    if (neverShowAfterClose && wasRecentlyClosed) {
+      // never show if { openAfterClose: false } && has been closed
       return false;
     }
 
-    return this.gteDependentKeys('daysSinceClose', 'openAfterClose');
+    if (restrictAfterClose && wasRecentlyClosed) {
+      // if { openAfterClose: isValidNumber }
+      return this.gteDependentKeys('daysSinceClose', 'openAfterClose');
+    }
+
+    return true;
   }),
 
   afterVisitBool: computed('daysSinceVisit', 'openAfterVisit', function() {
-    const open = this.get('openAfterVisit');
-    if (typeof open  === 'undefined' || open === null || open === true) {
-      return true;
-    }
+    const wasRecentlyVisited = this.get('recentlyVisited');
+    const neverShowAfterVisit = this.get('neverShowAfterVisit');
+    const restrictAfterVisit = this.get('restrictAfterVisit');
 
-    if (!open  && getDayVisited()) {
+    if (neverShowAfterVisit && wasRecentlyVisited) {
+      // never show if { openAfterVisit: false } && has been visited
       return false;
     }
 
-    return this.gteDependentKeys('daysSinceVisit', 'openAfterVisit');
+    if (restrictAfterVisit && wasRecentlyVisited) {
+      // if { openAfterVisit: isValidNumber }
+      return this.gteDependentKeys('daysSinceVisit', 'openAfterVisit');
+    }
+
+    return true;
   }),
 
   gteDependentKeys(firstKey, secondKey) {
@@ -169,3 +172,11 @@ export default Ember.Component.extend({
 
   //https://github.com/jasny/jquery.smartbanner/blob/master/jquery.smartbanner.js
 });
+
+function restrictMacro(delayKey) {
+  return computed(delayKey, function() {
+    const openDelay = this.get(delayKey);
+    const isValidNumber = isNaN(parseInt(openDelay, 10)) === false;
+    return isValidNumber;
+  });
+}

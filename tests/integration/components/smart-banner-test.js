@@ -44,6 +44,22 @@ test('it does not render on iOS unless an appId is set', function(assert) {
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
 });
 
+test('it does not render on iOS by default when no appId is set', function(assert) {
+  this.set('iOS', true);
+  this.set('android', false);
+
+  this.render(hbs`{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+  }}`);
+
+  const smartBanner = this.$();
+  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+});
+
 test('it does not render on iOS unless iOS platform detected', function(assert) {
   this.set('iOS', false);
   this.set('appIdIOS', 123);
@@ -113,25 +129,6 @@ test('it renders config parameters', function(assert) {
   assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'Description', 'The description is set correctly.');
   assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'View', 'The link text is set correctly.');
   assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/id123');
-  assert.equal(smartBanner.find('img').attr('src'), 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png');
-});
-
-test('it renders banner defaults if no config parameters', function(assert) {
-  this.set('showBanner', true);
-  this.set('config', undefined);
-  this.set('iOS', null);
-
-  this.render(hbs`{{smart-banner
-    showBanner=showBanner
-    config=config
-    iOS=iOS
-  }}`);
-
-  const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--title').text(), 'App Name', 'The title is set correctly.');
-  assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'Company Name, Inc.', 'The description is set correctly.');
-  assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'View', 'The link text is set correctly.');
-  assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com');
   assert.equal(smartBanner.find('img').attr('src'), 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png');
 });
 
@@ -524,4 +521,60 @@ test('banner should render the first time, regardless of openAfter durations', f
   }}`);
   const smartBanner = this.$();
   assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
+});
+
+test('it invokes the provided callback when clicking closed', function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('android', false);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
+
+  let functionInvoked = false;
+  const onClose = function() {
+    functionInvoked = true;
+  };
+
+  this.set('onClose', onClose);
+
+  this.render(hbs`{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+    onclose=(action onClose)
+  }}`);
+
+  const smartBanner = this.$();
+  smartBanner.find('.ember-smart-banner--close-button').click();
+  assert.equal(functionInvoked, true, 'the provded callback was called');
+});
+
+test('it invokes the provided callback when clicking view', function(assert) {
+  this.set('iOS', true);
+  this.set('appIdIOS', 123);
+  this.set('android', false);
+  this.set('appIdAndroid', null);
+  this.set('appStoreLanguage', 'en');
+
+  let functionInvoked = false;
+  const onVisit = function() {
+    functionInvoked = true;
+  };
+
+  this.set('onVisit', onVisit);
+
+  this.render(hbs`{{smart-banner
+    iOS=iOS
+    appIdIOS=appIdIOS
+    android=android
+    appIdAndroid=appIdAndroid
+    appStoreLanguage=appStoreLanguage
+    onvisit=(action onVisit)
+  }}`);
+
+  const smartBanner = this.$();
+  smartBanner.find('.ember-smart-banner--view-button').click();
+  assert.equal(functionInvoked, true, 'the provded callback was called');
 });
