@@ -1,6 +1,6 @@
 {
   "name": "ember-smart-banner",
-  "version": "0.9.15",
+  "version": "0.0.1",
   "description": "Simple, configurable smart banner for ember-cli",
   "directories": {
     "doc": "doc",
@@ -11,11 +11,15 @@
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": "https://github.com/runtrizapps/ember-smart-banner",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "runtriz",
+  "author": "Tyler Newman <tyler.newman@runtriz.com>",
+  "contributors": [
+    "David Govea <david.govea@runtriz.com>",
+    "Francesca Reyes <francesca.reyes@runtriz.com>"
+  ],
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
