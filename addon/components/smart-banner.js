@@ -112,13 +112,14 @@ export default Ember.Component.extend({
   openAfterVisit: computed.reads('config.openAfterVisit'),
 
   neverShowAfterClose: computed.equal('openAfterClose', false),
-  recentlyClosed: computed.bool('daysSinceClose'),
+  neverClosed: computedIsNaN('daysSinceClose'),
+  recentlyClosed: computed.not('neverClosed'),
   restrictAfterClose: restrictMacro('openAfterClose'),
 
   neverShowAfterVisit: computed.equal('openAfterVisit', false),
-  recentlyVisited: computed.bool('daysSinceVisit'),
+  neverVisited: computedIsNaN('daysSinceVisit'),
+  recentlyVisited: computed.not('neverVisited'),
   restrictAfterVisit: restrictMacro('openAfterVisit'),
-
 
   afterCloseBool: computed('daysSinceClose', 'openAfterClose', function() {
     const wasRecentlyClosed = this.get('recentlyClosed');
@@ -174,6 +175,12 @@ export default Ember.Component.extend({
 
   //https://github.com/jasny/jquery.smartbanner/blob/master/jquery.smartbanner.js
 });
+
+function computedIsNaN(depKey) {
+  return computed(function() {
+    return isNaN(this.get(depKey));
+  });
+}
 
 function restrictMacro(delayKey) {
   return computed(delayKey, function() {
