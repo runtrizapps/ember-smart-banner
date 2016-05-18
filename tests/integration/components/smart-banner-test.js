@@ -1,6 +1,11 @@
 /* global localStorage */
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import Ember from 'ember';
+
+const {
+  run
+} = Ember;
 
 moduleForComponent('smart-banner', 'Integration | Component | ember smart banner', {
   integration: true
@@ -215,8 +220,10 @@ test('should successfully record click of close button ', function(assert) {
 
   // Click close button and assert that lastDayClosed is stored;
   const smartBanner = this.$();
-  smartBanner.find('.ember-smart-banner--close-button').click();
-  assert.ok(localStorage.getItem('ember-smart-banner.lastDayClosed'), 'click of close button is stored correctly');
+  run(() => {
+    smartBanner.find('.ember-smart-banner--close-button').click();
+    assert.ok(localStorage.getItem('ember-smart-banner.lastDayClosed'), 'click of close button is stored correctly');
+  });
 });
 
 test('should successfully record click of link', function(assert) {
@@ -238,8 +245,10 @@ test('should successfully record click of link', function(assert) {
 
   // Click close button and assert that lastDayClosed is stored;
   const smartBanner = this.$();
-  smartBanner.find('.ember-smart-banner--view-button').click();
-  assert.ok(localStorage.getItem('ember-smart-banner.lastDayVisited'), 'click of link is stored correctly');
+  run(() => {
+    smartBanner.find('.ember-smart-banner--view-button').click();
+    assert.ok(localStorage.getItem('ember-smart-banner.lastDayVisited'), 'click of link is stored correctly');
+  });
 });
 
 test('banner should be open if number of days since the banner was closed is equal to the set duration', function(assert) {
@@ -547,8 +556,10 @@ test('it invokes the provided callback when clicking closed', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  smartBanner.find('.ember-smart-banner--close-button').click();
-  assert.equal(functionInvoked, true, 'the provded callback was called');
+  run(() => {
+    smartBanner.find('.ember-smart-banner--close-button').click();
+    assert.equal(functionInvoked, true, 'the provded callback was called');
+  });
 });
 
 test('it invokes the provided callback when clicking view', function(assert) {
@@ -575,8 +586,10 @@ test('it invokes the provided callback when clicking view', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  smartBanner.find('.ember-smart-banner--view-button').click();
-  assert.equal(functionInvoked, true, 'the provded callback was called');
+  run(() => {
+    smartBanner.find('.ember-smart-banner--view-button').click();
+    assert.equal(functionInvoked, true, 'the provded callback was called');
+  });
 });
 
 test('closed today is not the same as never closed', function(assert) {
