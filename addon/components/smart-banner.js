@@ -160,11 +160,13 @@ export default Ember.Component.extend({
     return (this.get(firstKey) >= this.get(secondKey));
   },
 
+  // Returns NaN if no localstorage data has been set
   daysSinceClose: computed(function() {
     const timeSinceClosed = new Date() - Date.parse(getDayClosed());
     return Math.floor(timeSinceClosed / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
 
+  // Returns NaN if no localstorage data has been set
   daysSinceVisit: computed(function() {
     const timeSinceVisited = new Date() - Date.parse(getDayVisited());
     return Math.floor(timeSinceVisited / (24 * 60 * 60 * 1000)); // Convert ms to days
