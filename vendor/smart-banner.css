@@ -45,13 +45,16 @@
 }
 .ember-smart-banner--info {
   position: absolute;
-  left: 8.95em;
+  left: 4em;
   top: 2.2em;
   width: 44%;
   font-size: 0.7em;
   line-height: 1.2em;
   font-weight: bold;
   color: #000;
+}
+.has-icon .ember-smart-banner--info {
+  left: 8.95em;
 }
 .ember-smart-banner--info strong {
   display: block;

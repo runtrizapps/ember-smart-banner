@@ -1,9 +1,11 @@
 {{#if showBanner}}
   <div class="ember-smart-banner--inner">
     <a href="#" class='ember-smart-banner--close-button' onclick={{action 'closeBanner'}}>&times;</a>
-    <div class="ember-smart-banner--icon">
-      <img src="{{iconUrl}}" alt="App Icon" />
-    </div>
+    {{#if iconUrl}}
+      <div class="ember-smart-banner--icon">
+        <img src="{{iconUrl}}" alt="App Icon" />
+      </div>
+    {{/if}}
     <div class="ember-smart-banner--info">
       <strong class="ember-smart-banner--title">{{title}}</strong>
       <span class="ember-smart-banner--description">{{description}}</span>
