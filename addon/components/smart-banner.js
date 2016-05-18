@@ -20,6 +20,7 @@ export default Ember.Component.extend({
   layout,
 
   classNames: ['ember-smart-banner'],
+  classNameBindings: ['iconUrl:has-icon'],
   // http://discuss.emberjs.com/t/best-practices-accessing-app-config-from-addon-code/7006/16
   config: computed(function() {
     return getOwner(this).resolveRegistration('config:environment').emberSmartBanner;
