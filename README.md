@@ -1,4 +1,5 @@
-# ember-smart-banner
+
+# ember-smart-banner [![Build Status](https://travis-ci.org/runtrizapps/ember-smart-banner.svg?branch=master)](https://travis-ci.org/runtrizapps/ember-smart-banner)
 ----
 ember-smart-banner is an addon that can be installed with Ember CLI.  The addon provides a simple configurable Smart Banner that can be used in your Ember.js application.
 
