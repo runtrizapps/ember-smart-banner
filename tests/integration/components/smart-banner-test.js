@@ -252,6 +252,9 @@ test('should successfully record click of link', function(assert) {
 });
 
 test('banner should be open if number of days since the banner was closed is equal to the set duration', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -272,10 +275,16 @@ test('banner should be open if number of days since the banner was closed is equ
     openAfterClose=30
   }}`);
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
+  return Ember.run.later(this, () => {
+    assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
+    done();
+  }, 500);
 });
 
 test('banner should be open if number of days since the banner was closed is greater than the set duration', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -296,10 +305,16 @@ test('banner should be open if number of days since the banner was closed is gre
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
+  return Ember.run.later(this, () => {
+    assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
+    done();
+  }, 500);
 });
 
 test('banner should be closed if number of days since the banner was closed is less than set duration', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -318,9 +333,11 @@ test('banner should be closed if number of days since the banner was closed is l
     appStoreLanguage=appStoreLanguage
     openAfterClose=30
   }}`);
-
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
+  return Ember.run.later(this, () => {
+    assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
+    done();
+  }, 500);
 });
 
 test('banner should be open in complex scenario', function(assert) {

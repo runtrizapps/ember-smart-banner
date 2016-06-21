@@ -19,6 +19,23 @@ const {
 export default Ember.Component.extend({
   layout,
 
+  init() {
+    this._super(...arguments);
+    this.errors = [];
+
+    getDayClosed().then((result)=> {
+      this.set('dayClosed', result);
+    });
+
+    getDayVisited().then((result)=> {
+      this.set('dayVisited', result);
+    });
+  },
+
+  dayClosed: null,
+
+  dayVisited: null,
+
   classNames: ['ember-smart-banner'],
   classNameBindings: ['iconUrl:has-icon'],
   // http://discuss.emberjs.com/t/best-practices-accessing-app-config-from-addon-code/7006/16
@@ -163,14 +180,16 @@ export default Ember.Component.extend({
   },
 
   // Returns NaN if no localstorage data has been set
-  daysSinceClose: computed(function() {
-    const timeSinceClosed = new Date() - Date.parse(getDayClosed());
+  daysSinceClose: computed('dayClosed', function() {
+    const dayClosed = this.get('dayClosed');
+    const timeSinceClosed = new Date() - Date.parse(dayClosed);
     return Math.floor(timeSinceClosed / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
 
   // Returns NaN if no localstorage data has been set
-  daysSinceVisit: computed(function() {
-    const timeSinceVisited = new Date() - Date.parse(getDayVisited());
+  daysSinceVisit: computed('dayVisited', function() {
+    const dayVisited = this.get('dayVisited');
+    const timeSinceVisited = new Date() - Date.parse(dayVisited);
     return Math.floor(timeSinceVisited / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
 
@@ -178,7 +197,7 @@ export default Ember.Component.extend({
 });
 
 function computedIsNaN(depKey) {
-  return computed(function() {
+  return computed(depKey, function() {
     return isNaN(this.get(depKey));
   });
 }

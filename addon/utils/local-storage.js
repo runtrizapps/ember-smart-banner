@@ -1,14 +1,32 @@
+import Ember from 'ember';
 const namespace = 'ember-smart-banner';
 
+const {
+  RSVP: { Promise }
+} = Ember;
+
 export function setItem(key, value) {
-  localStorage.setItem(_namespacedKey(key), JSON.stringify(value));
+  return new Promise((resolve, reject) => {
+    if (localStorage) {
+      const result = localStorage.setItem(_namespacedKey(key), JSON.stringify(value));
+      resolve(result);
+    } else {
+      reject({ error: 'localStorage does not exist' });
+    }
+  }).catch(Ember.K);
+
 }
 
 export function getItem(key) {
-  const result = localStorage.getItem(_namespacedKey(key));
-  if (result) {
-    return safelyParseJSON(result);
-  }
+  return new Promise((resolve, reject) => {
+    if (localStorage) {
+      const result = localStorage.getItem(_namespacedKey(key));
+      const item = safelyParseJSON(result);
+      resolve(item);
+    } else {
+      reject({ error: 'localStorage does not exist' });
+    }
+  }).catch(Ember.K);
 }
 
 function _namespacedKey(keyName) {
