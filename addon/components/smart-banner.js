@@ -25,10 +25,14 @@ export default Ember.Component.extend({
 
     getDayClosed().then((result)=> {
       this.set('dayClosed', result);
+    }).catch(() => {
+      this.set('showBanner', false);
     });
 
     getDayVisited().then((result)=> {
       this.set('dayVisited', result);
+    }).catch(() => {
+      this.set('showBanner', false);
     });
   },
 

@@ -13,7 +13,7 @@ export function setItem(key, value) {
     } else {
       reject({ error: 'localStorage does not exist' });
     }
-  }).catch(Ember.K);
+  });
 
 }
 
@@ -26,14 +26,14 @@ export function getItem(key) {
     } else {
       reject({ error: 'localStorage does not exist' });
     }
-  }).catch(Ember.K);
+  });
 }
 
 function _namespacedKey(keyName) {
   return `${namespace}.${keyName}`;
 }
 
-function safelyParseJSON (json) {
+function safelyParseJSON(json) {
   let parsed;
 
   try {
