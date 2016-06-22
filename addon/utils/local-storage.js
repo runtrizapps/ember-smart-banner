@@ -7,11 +7,11 @@ const {
 
 export function setItem(key, value) {
   return new Promise((resolve, reject) => {
-    if (localStorage) {
-      const result = localStorage.setItem(_namespacedKey(key), JSON.stringify(value));
+    if (localforage.driver) {
+      const result = localforage.setItem(_namespacedKey(key), JSON.stringify(value));
       resolve(result);
     } else {
-      reject({ error: 'localStorage does not exist' });
+      reject({ error: 'localforage driver does not exist' });
     }
   });
 
@@ -19,12 +19,12 @@ export function setItem(key, value) {
 
 export function getItem(key) {
   return new Promise((resolve, reject) => {
-    if (localStorage) {
-      const result = localStorage.getItem(_namespacedKey(key));
+    if (localforage.driver) {
+      const result = localforage.getItem(_namespacedKey(key));
       const item = safelyParseJSON(result);
       resolve(item);
     } else {
-      reject({ error: 'localStorage does not exist' });
+      reject({ error: 'localforage driver does not exist' });
     }
   });
 }
