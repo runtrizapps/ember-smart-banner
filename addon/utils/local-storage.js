@@ -7,7 +7,7 @@ const {
 
 export function setItem(key, value) {
   return new Promise((resolve, reject) => {
-    if (localforage.driver) {
+    if (localforage.driver()) {
       const result = localforage.setItem(_namespacedKey(key), JSON.stringify(value));
       resolve(result);
     } else {
@@ -19,7 +19,7 @@ export function setItem(key, value) {
 
 export function getItem(key) {
   return new Promise((resolve, reject) => {
-    if (localforage.driver) {
+    if (localforage.driver()) {
       const result = localforage.getItem(_namespacedKey(key));
       const item = safelyParseJSON(result);
       resolve(item);
