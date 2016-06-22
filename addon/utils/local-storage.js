@@ -8,8 +8,10 @@ const {
 export function setItem(key, value) {
   return new Promise((resolve, reject) => {
     if (localforage.driver()) {
-      const result = localforage.setItem(_namespacedKey(key), JSON.stringify(value));
-      resolve(result);
+      localforage.setItem(_namespacedKey(key), JSON.stringify(value))
+        .then((result) => {
+          resolve(result);
+        });
     } else {
       reject({ error: 'localforage driver does not exist' });
     }
@@ -20,9 +22,11 @@ export function setItem(key, value) {
 export function getItem(key) {
   return new Promise((resolve, reject) => {
     if (localforage.driver()) {
-      const result = localforage.getItem(_namespacedKey(key));
-      const item = safelyParseJSON(result);
-      resolve(item);
+      localforage.getItem(_namespacedKey(key))
+        .then((result) => {
+          const item = safelyParseJSON(result);
+          resolve(item);
+        });
     } else {
       reject({ error: 'localforage driver does not exist' });
     }
