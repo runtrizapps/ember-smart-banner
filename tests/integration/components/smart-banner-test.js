@@ -218,9 +218,8 @@ test('should successfully record click of close button ', function(assert) {
       .then(function(result) {
         assert.notOk(result, 'click of close button is not present before render/click');
         done();
-    });
+      });
   });
-
 
   this.render(hbs `{{smart-banner
     iOS=iOS
