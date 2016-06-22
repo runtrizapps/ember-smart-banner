@@ -3,6 +3,9 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import wait from 'ember-test-helpers/wait';
 import Ember from 'ember';
+const {
+  RSVP: { Promise }
+} = Ember;
 
 const {
   run
@@ -438,6 +441,9 @@ test('banner should be closed if number of days since the banner was closed is l
 });
 
 test('banner should be open in complex scenario', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -445,25 +451,30 @@ test('banner should be open in complex scenario', function(assert) {
   this.set('appStoreLanguage', 'en');
   localforage.clear();
   var dateOffset = (24 * 60 * 60 * 1000) * 60; // 60 days
-  var newDate = new Date(); // today
-  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 60 days prior to today
-  localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  var newClosedDate = new Date(); // today
+  newClosedDate.setTime(newClosedDate.getTime() - dateOffset); //newDate set to 60 days prior to today
   dateOffset = (24 * 60 * 60 * 1000) * 45; // 45 days
-  newDate = new Date(); // today
-  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 45 days prior to today
-  localforage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
-  this.render(hbs `{{smart-banner
-    iOS=iOS
-    appIdIOS=appIdIOS
-    android=android
-    appIdAndroid=appIdAndroid
-    appStoreLanguage=appStoreLanguage
-    openAfterClose=30
-    openAfterVisit=30
-  }}`);
-
-  const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
+  var newVisitedDate = new Date(); // today
+  newVisitedDate.setTime(newVisitedDate.getTime() - dateOffset); //newDate set to 45 days prior to today
+  var _this = this;
+  Promise.all([localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newClosedDate)),
+               localforage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newVisitedDate))])
+    .then(() => {
+      _this.render(hbs `{{smart-banner
+        iOS=iOS
+        appIdIOS=appIdIOS
+        android=android
+        appIdAndroid=appIdAndroid
+        appStoreLanguage=appStoreLanguage
+        openAfterClose=30
+        openAfterVisit=30
+      }}`);
+      const smartBanner = this.$();
+      return wait().then(() => {
+        assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 1, 'banner is open');
+        done();
+      });
+    });
 });
 
 test('banner should be closed in complex scenario', function(assert) {
@@ -477,28 +488,30 @@ test('banner should be closed in complex scenario', function(assert) {
   this.set('appStoreLanguage', 'en');
   localforage.clear();
   var dateOffset = (24 * 60 * 60 * 1000) * 35; // 35 days
-  var newDate = new Date(); // today
-  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 35 days prior to today
-  localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  var newClosedDate = new Date(); // today
+  newClosedDate.setTime(newClosedDate.getTime() - dateOffset); //newDate set to 35 days prior to today
   dateOffset = (24 * 60 * 60 * 1000) * 25; // 25 days
-  newDate = new Date(); // today
-  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 25 days prior to today
-  localforage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
-  this.render(hbs `{{smart-banner
-    iOS=iOS
-    appIdIOS=appIdIOS
-    android=android
-    appIdAndroid=appIdAndroid
-    appStoreLanguage=appStoreLanguage
-    openAfterClose=30
-    openAfterVisit=30
-  }}`);
-
-  const smartBanner = this.$();
-  return wait().then(() => {
-    assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
-    done();
-  });
+  var newVisitedDate = new Date(); // today
+  newVisitedDate.setTime(newVisitedDate.getTime() - dateOffset); //newDate set to 25 days prior to today
+  var _this = this;
+  Promise.all([localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newClosedDate)),
+               localforage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newVisitedDate))])
+    .then(() => {
+      _this.render(hbs `{{smart-banner
+        iOS=iOS
+        appIdIOS=appIdIOS
+        android=android
+        appIdAndroid=appIdAndroid
+        appStoreLanguage=appStoreLanguage
+        openAfterClose=30
+        openAfterVisit=30
+      }}`);
+      const smartBanner = this.$();
+      return wait().then(() => {
+        assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
+        done();
+      });
+    });
 });
 
 test('set openafterClose to true will make the banner default to open', function(assert) {
