@@ -242,13 +242,23 @@ test('should successfully record click of close button ', function(assert) {
 });
 
 test('should successfully record click of link', function(assert) {
+  assert.expect(2);
+  var done = assert.async(2);
+
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
   this.set('appIdAndroid', null);
   this.set('appStoreLanguage', 'en');
-  localStorage.clear();
-  assert.notOk(localStorage.getItem('ember-smart-banner.lastDayVisited'), 'click of link is not present before render/click');
+  localforage.clear();
+  assert.expect(2);
+  run(() => {
+    localforage.getItem('ember-smart-banner.lastDayVisited')
+      .then(function(result) {
+        assert.notOk(result, 'click of link is not present before render/click');
+        done();
+      });
+  });
 
   this.render(hbs `{{smart-banner
     iOS=iOS
@@ -260,9 +270,13 @@ test('should successfully record click of link', function(assert) {
 
   // Click close button and assert that lastDayClosed is stored;
   const smartBanner = this.$();
-  run(() => {
-    smartBanner.find('.ember-smart-banner--view-button').click();
-    assert.ok(localStorage.getItem('ember-smart-banner.lastDayVisited'), 'click of link is stored correctly');
+  smartBanner.find('.ember-smart-banner--view-button').click();
+  return wait()
+  .then(() => {
+    localforage.getItem('ember-smart-banner.lastDayVisited').then(function(result) {
+      assert.ok(result, 'click of view button is stored correctly');
+      done();
+    });
   });
 });
 
