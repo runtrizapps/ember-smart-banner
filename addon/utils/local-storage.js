@@ -13,7 +13,7 @@ export function setItem(key, value) {
           resolve(result);
         });
     } else {
-      reject({ error: 'localforage driver does not exist' });
+      reject('Localforage driver does not exist');
     }
   });
 
@@ -28,7 +28,7 @@ export function getItem(key) {
           resolve(item);
         });
     } else {
-      reject({ error: 'localforage driver does not exist' });
+      reject('Localforage driver does not exist');
     }
   });
 }
