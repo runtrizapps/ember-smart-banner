@@ -1,6 +1,7 @@
-/* global localStorage */
+/* global localforage */
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import wait from 'ember-test-helpers/wait';
 import Ember from 'ember';
 
 const {
@@ -202,13 +203,24 @@ test('is can set iconUrl through template', function(assert) {
 });
 
 test('should successfully record click of close button ', function(assert) {
+  assert.expect(2);
+  var done = assert.async(2);
+
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
   this.set('appIdAndroid', null);
   this.set('appStoreLanguage', 'en');
-  localStorage.clear();
-  assert.notOk(localStorage.getItem('ember-smart-banner.lastDayClosed'), 'click of close button is not present before render/click');
+
+  localforage.clear();
+  run(() => {
+    localforage.getItem('ember-smart-banner.lastDayClosed')
+      .then(function(result) {
+        assert.notOk(result, 'click of close button is not present before render/click');
+        done();
+    });
+  });
+
 
   this.render(hbs `{{smart-banner
     iOS=iOS
@@ -220,9 +232,13 @@ test('should successfully record click of close button ', function(assert) {
 
   // Click close button and assert that lastDayClosed is stored;
   const smartBanner = this.$();
-  run(() => {
-    smartBanner.find('.ember-smart-banner--close-button').click();
-    assert.ok(localStorage.getItem('ember-smart-banner.lastDayClosed'), 'click of close button is stored correctly');
+  smartBanner.find('.ember-smart-banner--close-button').click();
+  return wait()
+  .then(() => {
+    localforage.getItem('ember-smart-banner.lastDayClosed').then(function(result) {
+      assert.ok(result, 'click of close button is stored correctly');
+      done();
+    });
   });
 });
 
