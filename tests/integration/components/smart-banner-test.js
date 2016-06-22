@@ -13,6 +13,9 @@ moduleForComponent('smart-banner', 'Integration | Component | ember smart banner
 });
 
 test('it renders on iOS when an appId is set', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -28,10 +31,16 @@ test('it renders on iOS when an appId is set', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/id123');
+  return wait().then(() =>{
+    assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/id123');
+    done();
+  });
 });
 
 test('it does not render on iOS unless an appId is set', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', true);
   this.set('appIdIOS', null);
   this.set('android', false);
@@ -47,10 +56,16 @@ test('it does not render on iOS unless an appId is set', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+  return wait().then(() =>{
+    assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+    done();
+  });
 });
 
 test('it does not render on iOS by default when no appId is set', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', true);
   this.set('android', false);
 
@@ -63,10 +78,16 @@ test('it does not render on iOS by default when no appId is set', function(asser
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+  return wait().then(() =>{
+    assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+    done();
+  });
 });
 
 test('it does not render on iOS unless iOS platform detected', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', false);
   this.set('appIdIOS', 123);
   this.set('android', false);
@@ -82,10 +103,16 @@ test('it does not render on iOS unless iOS platform detected', function(assert) 
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+  return wait().then(() =>{
+    assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+    done();
+  });
 });
 
 test('it renders on Android when an appId is set', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', false);
   this.set('appIdIOS', null);
   this.set('android', true);
@@ -101,10 +128,16 @@ test('it renders on Android when an appId is set', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'market://details?id=123', 'it renders with android link');
+  return wait().then(() =>{
+    assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'market://details?id=123', 'it renders with android link');
+    done();
+  });
 });
 
 test('it does not render on Android unless an appId is set', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', false);
   this.set('appIdIOS', null);
   this.set('android', true);
@@ -120,10 +153,16 @@ test('it does not render on Android unless an appId is set', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+  return wait().then(() =>{
+    assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is not rendered');
+    done();
+  });
 });
 
 test('it renders config parameters', function(assert) {
+  assert.expect(5);
+  var done = assert.async(1);
+
   this.set('iOS', true);
 
   this.render(hbs`{{smart-banner
@@ -131,14 +170,20 @@ test('it renders config parameters', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--title').text(), 'App Title', 'The title is set correctly.');
-  assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'Description', 'The description is set correctly.');
-  assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'View', 'The link text is set correctly.');
-  assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/id123');
-  assert.equal(smartBanner.find('img').attr('src'), 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png');
+  return wait().then(() =>{
+    assert.equal(smartBanner.find('.ember-smart-banner--title').text(), 'App Title', 'The title is set correctly.');
+    assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'Description', 'The description is set correctly.');
+    assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'View', 'The link text is set correctly.');
+    assert.equal(smartBanner.find('.ember-smart-banner--view-button').attr('href'), 'https://itunes.apple.com/en/app/id123');
+    assert.equal(smartBanner.find('img').attr('src'), 'http://icons.iconarchive.com/icons/wineass/ios7-redesign/512/Appstore-icon.png');
+    done();
+  });
 });
 
 test('is can set title through template', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('appStoreLanguage', 'en');
@@ -151,10 +196,16 @@ test('is can set title through template', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--title').text(), 'TEST Title', 'The title is set correctly.');
+  return wait().then(() =>{
+    assert.equal(smartBanner.find('.ember-smart-banner--title').text(), 'TEST Title', 'The title is set correctly.');
+    done();
+  });
 });
 
 test('is can set description through template', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('appStoreLanguage', 'en');
@@ -167,10 +218,16 @@ test('is can set description through template', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'TEST Description', 'The description is set correctly.');
+  return wait().then(() =>{
+    assert.equal(smartBanner.find('.ember-smart-banner--description').text(), 'TEST Description', 'The description is set correctly.');
+    done();
+  });
 });
 
 test('is can set linkText through template', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('appStoreLanguage', 'en');
@@ -183,10 +240,16 @@ test('is can set linkText through template', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'TEST Link', 'The link text is set correctly.');
+  return wait().then(() =>{
+    assert.equal(smartBanner.find('.ember-smart-banner--view-button').text().trim(), 'TEST Link', 'The link text is set correctly.');
+    done();
+  });
 });
 
 test('is can set iconUrl through template', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('appStoreLanguage', 'en');
@@ -199,7 +262,10 @@ test('is can set iconUrl through template', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('img').attr('src'), 'https://www.example.com/');
+  return wait().then(() =>{
+    assert.equal(smartBanner.find('img').attr('src'), 'https://www.example.com/');
+    done();
+  });
 });
 
 test('should successfully record click of close button ', function(assert) {
@@ -289,11 +355,11 @@ test('banner should be open if number of days since the banner was closed is equ
   this.set('android', false);
   this.set('appIdAndroid', null);
   this.set('appStoreLanguage', 'en');
-  localStorage.clear();
+  localforage.clear();
   var dateOffset = (24 * 60 * 60 * 1000) * 30; // 30 days
   var newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 30 days from today
-  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
 
   this.render(hbs `{{smart-banner
     iOS=iOS
@@ -319,11 +385,11 @@ test('banner should be open if number of days since the banner was closed is gre
   this.set('android', false);
   this.set('appIdAndroid', null);
   this.set('appStoreLanguage', 'en');
-  localStorage.clear();
+  localforage.clear();
   var dateOffset = (24 * 60 * 60 * 1000) * 31; // 31 days
   var newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 31 days from today
-  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
   this.render(hbs `{{smart-banner
     iOS=iOS
     appIdIOS=appIdIOS
@@ -349,24 +415,26 @@ test('banner should be closed if number of days since the banner was closed is l
   this.set('android', false);
   this.set('appIdAndroid', null);
   this.set('appStoreLanguage', 'en');
-  localStorage.clear();
+  localforage.clear();
   var dateOffset = (24 * 60 * 60 * 1000) * 29; // 29 days
   var newDate = new Date(); // today
-  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 30 days from today
-  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
-  this.render(hbs `{{smart-banner
-    iOS=iOS
-    appIdIOS=appIdIOS
-    android=android
-    appIdAndroid=appIdAndroid
-    appStoreLanguage=appStoreLanguage
-    openAfterClose=30
-  }}`);
-  const smartBanner = this.$();
-  return Ember.run.later(this, () => {
-    assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
-    done();
-  }, 500);
+  newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 29 days from today
+  var _this = this;
+  localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate)).then(function() {
+    _this.render(hbs `{{smart-banner
+      iOS=iOS
+      appIdIOS=appIdIOS
+      android=android
+      appIdAndroid=appIdAndroid
+      appStoreLanguage=appStoreLanguage
+      openAfterClose=30
+    }}`);
+    const smartBanner = this.$();
+    return wait().then(() => {
+      assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
+      done();
+    });
+  });
 });
 
 test('banner should be open in complex scenario', function(assert) {
@@ -375,15 +443,15 @@ test('banner should be open in complex scenario', function(assert) {
   this.set('android', false);
   this.set('appIdAndroid', null);
   this.set('appStoreLanguage', 'en');
-  localStorage.clear();
+  localforage.clear();
   var dateOffset = (24 * 60 * 60 * 1000) * 60; // 60 days
   var newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 60 days prior to today
-  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
   dateOffset = (24 * 60 * 60 * 1000) * 45; // 45 days
   newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 45 days prior to today
-  localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
   this.render(hbs `{{smart-banner
     iOS=iOS
     appIdIOS=appIdIOS
@@ -399,20 +467,23 @@ test('banner should be open in complex scenario', function(assert) {
 });
 
 test('banner should be closed in complex scenario', function(assert) {
+  assert.expect(1);
+  var done = assert.async(1);
+
   this.set('iOS', true);
   this.set('appIdIOS', 123);
   this.set('android', false);
   this.set('appIdAndroid', null);
   this.set('appStoreLanguage', 'en');
-  localStorage.clear();
+  localforage.clear();
   var dateOffset = (24 * 60 * 60 * 1000) * 35; // 35 days
   var newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 35 days prior to today
-  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
   dateOffset = (24 * 60 * 60 * 1000) * 25; // 25 days
   newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 25 days prior to today
-  localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
   this.render(hbs `{{smart-banner
     iOS=iOS
     appIdIOS=appIdIOS
@@ -424,7 +495,10 @@ test('banner should be closed in complex scenario', function(assert) {
   }}`);
 
   const smartBanner = this.$();
-  assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
+  return wait().then(() => {
+    assert.equal(smartBanner.find('.ember-smart-banner--inner').length, 0, 'banner is closed');
+    done();
+  });
 });
 
 test('set openafterClose to true will make the banner default to open', function(assert) {
@@ -435,15 +509,15 @@ test('set openafterClose to true will make the banner default to open', function
   this.set('appStoreLanguage', 'en');
   this.set('openAfterClose', '30');
   this.set('openAfterVisit', '30');
-  localStorage.clear();
+  localforage.clear();
   var dateOffset = (24 * 60 * 60 * 1000) * 35; // 35 days
   var newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 35 days prior to today
-  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
   dateOffset = (24 * 60 * 60 * 1000) * 25; // 25 days
   newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 25 days prior to today
-  localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
   this.render(hbs `{{smart-banner
     iOS=iOS
     appIdIOS=appIdIOS
@@ -471,15 +545,15 @@ test('set openafterVisit to true will make the banner default to open', function
   this.set('appStoreLanguage', 'en');
   this.set('openAfterClose', '30');
   this.set('openAfterVisit', '30');
-  localStorage.clear();
+  localforage.clear();
   var dateOffset = (24 * 60 * 60 * 1000) * 35; // 35 days
   var newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 35 days prior to today
-  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
   dateOffset = (24 * 60 * 60 * 1000) * 25; // 25 days
   newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 25 days prior to today
-  localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
   this.render(hbs `{{smart-banner
     iOS=iOS
     appIdIOS=appIdIOS
@@ -504,12 +578,12 @@ test('set openafterClose to false will make the banner default to close', functi
   this.set('appStoreLanguage', 'en');
   this.set('openAfterClose', '30');
   this.set('openAfterVisit', '30');
-  localStorage.clear();
+  localforage.clear();
   var dateOffset = (24 * 60 * 60 * 1000) * 35; // 35 days
   var newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 35 days prior to today
-  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
-  localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
   this.render(hbs `{{smart-banner
     iOS=iOS
     appIdIOS=appIdIOS
@@ -535,12 +609,12 @@ test('set afterVisitopen to false will make the banner default to close', functi
   this.set('appStoreLanguage', 'en');
   this.set('openAfterClose', '30');
   this.set('openAfterVisit', '30');
-  localStorage.clear();
+  localforage.clear();
   var dateOffset = (24 * 60 * 60 * 1000) * 35; // 35 days
   var newDate = new Date(); // today
   newDate.setTime(newDate.getTime() - dateOffset); //newDate set to 35 days prior to today
-  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
-  localStorage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayVisited', JSON.stringify(newDate));
   this.render(hbs `{{smart-banner
     iOS=iOS
     appIdIOS=appIdIOS
@@ -563,7 +637,7 @@ test('banner should render the first time, regardless of openAfter durations', f
   this.set('android', false);
   this.set('appIdAndroid', null);
   this.set('appStoreLanguage', 'en');
-  localStorage.clear();
+  localforage.clear();
 
   this.render(hbs `{{smart-banner
     iOS=iOS
@@ -643,9 +717,9 @@ test('closed today is not the same as never closed', function(assert) {
   this.set('appIdIOS', 123);
   this.set('openAfterClose', '30');
   this.set('openAfterVisit', '30');
-  localStorage.clear();
+  localforage.clear();
   var newDate = new Date(); // today
-  localStorage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
+  localforage.setItem('ember-smart-banner.lastDayClosed', JSON.stringify(newDate));
 
   // Should not show - was just closed recently
   this.render(hbs `{{smart-banner
