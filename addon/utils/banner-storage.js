@@ -1,9 +1,9 @@
-import localForage from '../utils/localforage';
+import Storage from '../utils/storage';
 
 const {
   setItem,
   getItem,
-} = localForage;
+} = Storage;
 
 function _setTimeStamp(key) {
   const now = new Date();
