@@ -1,6 +1,6 @@
 {
   "name": "ember-smart-banner",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Simple, configurable smart banner for ember-cli",
   "directories": {
     "doc": "doc",

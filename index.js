@@ -12,6 +12,8 @@ module.exports = {
     this._super.included(app);
 
     app.import('vendor/smart-banner.css');
-    app.import(app.bowerDirectory + '/localforage/dist/localforage.js');
+    if (app.name === 'dummy') {
+      app.import(app.bowerDirectory + '/localforage/dist/localforage.js');
+    }
   }
 };
