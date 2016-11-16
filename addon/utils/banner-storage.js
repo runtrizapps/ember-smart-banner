@@ -5,23 +5,23 @@ const {
   getItem,
 } = localStorage;
 
-function _setTimeStamp(key) {
+function _setTimeStamp(key, additionalNamespace) {
   const now = new Date();
-  return setItem(key, now);
+  return setItem(key, now, additionalNamespace);
 }
 
-export function getDayClosed() {
-  return getItem('lastDayClosed');
+export function getDayClosed(additionalNamespace) {
+  return getItem('lastDayClosed', additionalNamespace);
 }
 
-export function setDayClosed() {
-  return _setTimeStamp('lastDayClosed');
+export function setDayClosed(additionalNamespace) {
+  return _setTimeStamp('lastDayClosed', additionalNamespace);
 }
 
-export function getDayVisited() {
-  return getItem('lastDayVisited');
+export function getDayVisited(additionalNamespace) {
+  return getItem('lastDayVisited', additionalNamespace);
 }
 
-export function setDayVisited() {
-  return _setTimeStamp('lastDayVisited');
+export function setDayVisited(additionalNamespace) {
+  return _setTimeStamp('lastDayVisited', additionalNamespace);
 }

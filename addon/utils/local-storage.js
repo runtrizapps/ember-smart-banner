@@ -1,18 +1,27 @@
 const namespace = 'ember-smart-banner';
 
-export function setItem(key, value) {
-  localStorage.setItem(_namespacedKey(key), JSON.stringify(value));
+export function setItem(key, value, additionalNamespace) {
+  localStorage.setItem(_namespacedKey(key, additionalNamespace), JSON.stringify(value));
 }
 
-export function getItem(key) {
-  const result = localStorage.getItem(_namespacedKey(key));
-  if (result) {
-    return safelyParseJSON(result);
+export function getItem(key, additionalNamespace) {
+  try {
+    const result = localStorage.getItem(_namespacedKey(key, additionalNamespace));
+    if (result) {
+      return safelyParseJSON(result);
+    }
+  } catch (e) {
+    // Eat
   }
 }
 
-function _namespacedKey(keyName) {
-  return `${namespace}.${keyName}`;
+function _namespacedKey(keyName, additionalNamespace = '') {
+  let key = `${namespace}.${keyName}`;
+  if (additionalNamespace) {
+    key = `${additionalNamespace}.${key}`;
+  }
+
+  return key;
 }
 
 function safelyParseJSON (json) {

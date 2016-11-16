@@ -26,6 +26,8 @@ export default Ember.Component.extend({
     return getOwner(this).resolveRegistration('config:environment').emberSmartBanner;
   }),
 
+  namespace: '',
+
   title: computed.or('titleIOS', 'titleAndroid', 'config.title', 'bannerDefaults.title'),
   description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description', 'bannerDefaults.description'),
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText', 'bannerDefaults.linkText'),
@@ -88,7 +90,7 @@ export default Ember.Component.extend({
   actions: {
     openLink: function() {
       this.set('bannerClosed', true);
-      setDayVisited();
+      setDayVisited(this.get('namespace'));
       const visitFn = Ember.getWithDefault(this, 'attrs.onvisit', Ember.K);
       visitFn();
     },
@@ -96,7 +98,7 @@ export default Ember.Component.extend({
     closeBanner: function(e) {
       e.preventDefault();
       this.set('bannerClosed', true);
-      setDayClosed();
+      setDayClosed(this.get('namespace'));
       const closeFn = Ember.getWithDefault(this, 'attrs.onclose', Ember.K);
       closeFn();
     }
@@ -164,13 +166,13 @@ export default Ember.Component.extend({
 
   // Returns NaN if no localstorage data has been set
   daysSinceClose: computed(function() {
-    const timeSinceClosed = new Date() - Date.parse(getDayClosed());
+    const timeSinceClosed = new Date() - Date.parse(getDayClosed(this.get('namespace')));
     return Math.floor(timeSinceClosed / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
 
   // Returns NaN if no localstorage data has been set
   daysSinceVisit: computed(function() {
-    const timeSinceVisited = new Date() - Date.parse(getDayVisited());
+    const timeSinceVisited = new Date() - Date.parse(getDayVisited(this.get('namespace')));
     return Math.floor(timeSinceVisited / (24 * 60 * 60 * 1000)); // Convert ms to days
   }),
 
