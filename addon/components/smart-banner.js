@@ -1,4 +1,4 @@
-/* global window, navigator */
+/* global window, navigator, localStorage */
 
 import Ember from 'ember';
 import layout from '../templates/components/smart-banner';
@@ -32,7 +32,8 @@ export default Ember.Component.extend({
   description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description', 'bannerDefaults.description'),
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText', 'bannerDefaults.linkText'),
   iconUrl: computed.or('config.iconUrl', 'bannerDefaults.iconUrl'),
-  showBanner: computed.and('bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
+  hasLocalStorage: computed(() => typeof localStorage !== 'undefined' && typeof localStorage.getItem === 'function'),
+  showBanner: computed.and('hasLocalStorage', 'bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
   link: computed.or('displayAppStoreLink', 'displayMarketLink'),
 
   userAgent: computed(function() {
