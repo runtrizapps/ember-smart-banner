@@ -24,7 +24,7 @@ function _namespacedKey(keyName, additionalNamespace = '') {
   return key;
 }
 
-function safelyParseJSON (json) {
+function safelyParseJSON(json) {
   let parsed;
 
   try {

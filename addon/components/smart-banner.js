@@ -64,7 +64,8 @@ export default Ember.Component.extend({
         `/app/id${this.get('appIdIOS')}`
     );
   }),
-  displayAppStoreLink: computed.and('supportsIOS','appStoreLink'),
+
+  displayAppStoreLink: computed.and('supportsIOS', 'appStoreLink'),
 
   titleAndroid: computed.and('android', 'config.titleAndroid'),
   descriptionAndroid: computed.and('android', 'config.descriptionAndroid'),
@@ -73,7 +74,8 @@ export default Ember.Component.extend({
   marketLink: computed(function() {
     return `${this.get('bannerDefaults.marketLinkBase')}${this.get('appIdAndroid')}`;
   }),
-  displayMarketLink: computed.and('supportsAndroid','marketLink'),
+
+  displayMarketLink: computed.and('supportsAndroid', 'marketLink'),
 
   bannerDefaults: {
     appStoreLinkBase: 'https://itunes.apple.com',
