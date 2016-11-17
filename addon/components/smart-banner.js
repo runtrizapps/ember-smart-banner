@@ -32,7 +32,15 @@ export default Ember.Component.extend({
   description: computed.or('descriptionIOS', 'descriptionAndroid', 'config.description', 'bannerDefaults.description'),
   linkText: computed.or('linkTextIOS', 'linkTextAndroid', 'config.linkText', 'bannerDefaults.linkText'),
   iconUrl: computed.or('config.iconUrl', 'bannerDefaults.iconUrl'),
-  hasLocalStorage: computed(() => typeof localStorage !== 'undefined' && typeof localStorage.getItem === 'function'),
+  hasLocalStorage: computed(function() {
+    try {
+      const hasLocalStorage = typeof localStorage !== 'undefined' && !!localStorage;
+      return hasLocalStorage && typeof localStorage.getItem === 'function';
+    } catch (e) {
+      // Eat
+    }
+  }),
+
   showBanner: computed.and('hasLocalStorage', 'bannerOpen', 'supportsOS', 'afterCloseBool', 'afterVisitBool'), // Set showBanner to true to always show
   link: computed.or('displayAppStoreLink', 'displayMarketLink'),
 
